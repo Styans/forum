@@ -1,3 +1,3 @@
-module forun
+module forum
 
 go 1.20
