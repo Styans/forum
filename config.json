@@ -1,6 +1,0 @@
-{
-    "addr" : ":8080",
-    "dsn": "forum.sqlite3?parseTime=true",
-    "static_dir": "./ui/static",
-    "template_dir": "./ui/templates"
-}

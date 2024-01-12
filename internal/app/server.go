@@ -6,7 +6,6 @@ import (
 )
 
 func Server(cfg *configs.Config, handler http.Handler) error {
-
 	srv := &http.Server{
 		Addr:    cfg.Addr,
 		Handler: handler,
