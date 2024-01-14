@@ -22,14 +22,17 @@ func main() {
 		log.Println(err)
 		return
 	}
-	// db, err := sqlite3.OpenDB(cfg.DB.DSN)
 	db, err := sqlite.OpenDB(cfg.DB.DSN)
 
 	repo := repository.NewRepository(db)
 
 	service := service.NewService(repo)
 
-	template := render.NewTemplateHTML()
+	template, err := render.NewTemplateHTML(cfg.TemplateDir)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 
 	handler := handlers.NewHandler(service, template)
 

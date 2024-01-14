@@ -11,3 +11,5 @@ type PostService struct {
 func NewPostService(repo models.PostRepo) *PostService {
 	return &PostService{repo}
 }
+
+
