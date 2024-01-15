@@ -3,12 +3,16 @@ package app
 import (
 	"forum/configs"
 	"net/http"
+	"time"
 )
 
 func Server(cfg *configs.Config, handler http.Handler) error {
 	srv := &http.Server{
-		Addr:    cfg.Addr,
-		Handler: handler,
+		Addr:         cfg.Addr,
+		Handler:      handler,
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
 	}
 
 	err := srv.ListenAndServe()

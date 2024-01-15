@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"forum/configs"
 	"forum/internal/app"
 	"forum/internal/handlers"
@@ -22,7 +23,11 @@ func main() {
 		log.Println(err)
 		return
 	}
+	fmt.Println(cfg.DB.DSN)
 	db, err := sqlite.OpenDB(cfg.DB.DSN)
+	if err != nil {
+		log.Fatal("hello")
+	}
 
 	repo := repository.NewRepository(db)
 

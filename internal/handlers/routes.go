@@ -12,10 +12,8 @@ func (h *Handler) Routes() *http.ServeMux {
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	mux.HandleFunc("/user/register", h.register)
-	mux.HandleFunc("/user/signup", h.registers)
 	mux.HandleFunc("/user/login", h.login)
 
-	
 	mux.HandleFunc("/", isAuth(rateLimit(h.home)))
 
 	return mux

@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	"forum/internal/models"
 	"time"
 
@@ -30,7 +29,6 @@ func (u *UserService) CreateUser(userDTO *models.CreateUserDTO) error {
 		UpdatedAt: time.Now(),
 	}
 	err = u.repo.CreateUser(user)
-	fmt.Println("ASDFSA\n\n")
 	if err != nil {
 		return err
 	}

@@ -35,14 +35,10 @@ type DeletePostDTO struct {
 }
 
 type PostService interface {
-	CreatePost(post *CreatePostDTO) (int, error)
-	CreatePostWithImage(post *CreatePostDTO) (int, error)
+	CreatePost(post *CreatePostDTO) error
+	CreatePostWithImage(post *CreatePostDTO) error
 	GetAllPosts(offset, limit int) ([]*Post, error)
-	GetLikedPosts(userID int) ([]*Post, error)
-	GetPostByID(id int) (*Post, error)
-	GetPostsByTitle(title string) ([]*Post, error)
 	GetPostsByAuthorID(author int) ([]*Post, error)
-	GetPostsByCategory(category string) ([]*Post, error)
 	UpdatePost(post *Post) error
 	DeletePost(id int) error
 }
