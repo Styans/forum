@@ -26,7 +26,9 @@ func main() {
 	fmt.Println(cfg.DB.DSN)
 	db, err := sqlite.OpenDB(cfg.DB.DSN)
 	if err != nil {
-		log.Fatal("hello")
+		// log.Fatal("hello")
+		fmt.Println(err)
+		return
 	}
 
 	repo := repository.NewRepository(db)

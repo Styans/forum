@@ -5,6 +5,7 @@ import (
 	"forum/internal/models"
 	"forum/internal/repository/comment"
 	"forum/internal/repository/post"
+	"forum/internal/repository/session"
 	"forum/internal/repository/user"
 )
 
@@ -12,6 +13,7 @@ type Repository struct {
 	CommentRepo models.CommentRepo
 	PostRepo    models.PostRepo
 	UserRepo    models.UserRepo
+	SessionRepo models.SessionRepo
 }
 
 func NewRepository(db *sql.DB) *Repository {
@@ -19,5 +21,6 @@ func NewRepository(db *sql.DB) *Repository {
 		PostRepo:    post.NewPostStorage(db),
 		UserRepo:    user.NewUserStorage(db),
 		CommentRepo: comment.NewCommentStorage(db),
+		SessionRepo: session.NewSessionStorage(db),
 	}
 }

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"forum/internal/models"
 	"net/http"
 )
@@ -16,7 +15,7 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 
 		err := r.ParseForm()
 		if err != nil {
-			fmt.Println(err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		req := &models.CreateUserDTO{
@@ -26,16 +25,19 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err = h.service.UserService.CreateUser(req)
-		if err != nil {
-			http.Error(w, "Service errors", http.StatusServiceUnavailable)
 
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusServiceUnavailable)
 			return
 		}
+
 		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 	case http.MethodGet:
 		h.templates.Render(w, r, "reg.page.html", nil)
+		return
 	default:
 		http.Error(w, "Not found", http.StatusNotFound)
+		return
 	}
 
 	return

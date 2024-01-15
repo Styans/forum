@@ -17,11 +17,20 @@ type CreateUserDTO struct {
 	Email    string `json:"email,omitempty"`
 }
 
+type LoginUserDTO struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Email    string `json:"email,omitempty"`
+}
 type UserService interface {
 	CreateUser(user *CreateUserDTO) error
+	GetUserByEmail(email string) (*User, error)
+	LoginUser(user *LoginUserDTO) (int, error)
 }
 
 type UserRepo interface {
 	CreateUser(user *User) error
-	
+	GetUserByUsername(username string) (*User, error)
+	GetUserByEmail(email string) (*User, error)
+	UpdateUser(user *User) error
 }

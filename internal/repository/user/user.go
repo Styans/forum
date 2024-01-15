@@ -13,7 +13,7 @@ func NewUserStorage(db *sql.DB) *UserStorage {
 	return &UserStorage{db: db}
 }
 
-//registration user ===================================================
+// registration user ===================================================
 func (s *UserStorage) CreateUser(user *models.User) error {
 	_, err := s.db.Exec("INSERT INTO user (username, hashed_pw, email, created_at, updated_at) VALUES ($1, $2, $3, $4, $5)",
 		user.Username,
@@ -37,15 +37,33 @@ func (s *UserStorage) CreateUser(user *models.User) error {
 }
 
 // for authentification user=============================================
-func (s *UserStorage) GetUserByUsername(email string) (*models.User, error) {
-	return nil, nil
+func (s *UserStorage) GetUserByUsername(username string) (*models.User, error) {
+	var user models.User
+	err := s.db.QueryRow("SELECT * FROM user WHERE username = $1", username).Scan(&user.ID, &user.Username, &user.HashedPW, &user.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
+
 func (s *UserStorage) GetUserByEmail(email string) (*models.User, error) {
-	return nil, nil
+	var user models.User
+	err := s.db.QueryRow("SELECT * FROM user WHERE email = $1", email).Scan(&user.ID, &user.Username, &user.HashedPW, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
 
 // for update user datas=========================================
 func (s *UserStorage) UpdateUser(user *models.User) error {
+	_, err := s.db.Exec("UPDATE user SET username = $1, hashed_pw = $2, email = $3 WHERE id = $4", user.Username, user.HashedPW, user.Email, user.ID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

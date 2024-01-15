@@ -34,3 +34,26 @@ func (u *UserService) CreateUser(userDTO *models.CreateUserDTO) error {
 	}
 	return nil
 }
+
+func (u *UserService) LoginUser(userDTO *models.LoginUserDTO) (int, error) {
+	user, err := u.GetUserByEmail(userDTO.Email)
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPW), []byte(userDTO.Password))
+	if err != nil {
+		return 0, err
+	}
+	return user.ID, nil
+}
+
+func (u *UserService) GetUserByEmail(email string) (*models.User, error) {
+	return u.repo.GetUserByEmail(email)
+}
+
+// if needed=================
+func (u *UserService) UpdateUser(user *models.User) error {
+	return nil
+}
