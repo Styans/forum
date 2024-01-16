@@ -1,6 +1,8 @@
 package render
 
 import (
+	"bytes"
+	"fmt"
 	"net/http"
 )
 
@@ -10,5 +12,15 @@ func (t *TemplatesHTML) Render(w http.ResponseWriter, r *http.Request, name stri
 		http.Error(w, "Template not found", http.StatusInternalServerError)
 		return
 	}
-	tmlp.Execute(w, data)
+
+	buf := new(bytes.Buffer)
+
+	err := tmlp.Execute(buf, data)
+	if err != nil {
+		fmt.Println("Error executing template: ", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	buf.WriteTo(w)
 }

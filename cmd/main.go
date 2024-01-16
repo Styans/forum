@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"forum/configs"
 	"forum/internal/app"
 	"forum/internal/handlers"
@@ -14,8 +13,9 @@ import (
 )
 
 func main() {
-	configPath := flag.String("config", "config.json", "path to config file")
+	log.Println("wait a minute...")
 
+	configPath := flag.String("config", "config.json", "path to config file")
 	flag.Parse()
 
 	cfg, err := configs.GetConfig(*configPath)
@@ -23,11 +23,10 @@ func main() {
 		log.Println(err)
 		return
 	}
-	fmt.Println(cfg.DB.DSN)
+
 	db, err := sqlite.OpenDB(cfg.DB.DSN)
 	if err != nil {
-		// log.Fatal("hello")
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
@@ -46,6 +45,8 @@ func main() {
 	err = app.Server(cfg, handler.Routes())
 
 	if err != nil {
-		log.Println(err)
+
+		log.Println("Ooopss...\n", err)
+		return
 	}
 }

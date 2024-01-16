@@ -37,7 +37,6 @@ func (u *UserService) CreateUser(userDTO *models.CreateUserDTO) error {
 
 func (u *UserService) LoginUser(userDTO *models.LoginUserDTO) (int, error) {
 	user, err := u.GetUserByEmail(userDTO.Email)
-
 	if err != nil {
 		return 0, err
 	}
@@ -53,7 +52,32 @@ func (u *UserService) GetUserByEmail(email string) (*models.User, error) {
 	return u.repo.GetUserByEmail(email)
 }
 
+// func (u *UserService) GetUserBySession(session *models.Session) (user *models.User, err error) {
+// 	user_id, err := u.repo.GetUserIDySession(session)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	user, err := u.repo.GetUserByID(user_id)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return user, nil
+// }
+
 // if needed=================
 func (u *UserService) UpdateUser(user *models.User) error {
 	return nil
+}
+
+// func (s *SessionService) GetUserBySession(session *models.Session) (user *models.User, err error) {
+// 	user, err = s.repo.GetUserByID(user.ID)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	return user, nil
+// }
+
+func (u *UserService) GetUserByID(id int) (user *models.User, err error) {
+	return u.repo.GetUserByID(id)
 }

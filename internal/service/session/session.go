@@ -31,3 +31,31 @@ func (s *SessionService) CreateSession(userId int) (*models.Session, error) {
 	}
 	return session, nil
 }
+
+func (s *SessionService) DeleteSessionByUUID(uuid string) error {
+	return s.repo.DeleteSessionByUUID(uuid)
+}
+
+func (u *SessionService) GetUserIdBySession(session *models.Session) (int, error) {
+	user_id, err := u.repo.GetUserIdBySession(session)
+	if err != nil {
+		return 0, err
+	}
+	return user_id, nil
+}
+
+func (s *SessionService) GetSessionByUUID(uuid string) (*models.Session, error) {
+	session, err := s.repo.GetSessionByUUID(uuid)
+
+	switch err {
+	case nil:
+		if session.ExpireAt.Before(time.Now()) {
+			return nil, models.ErrSessionExpired
+		}
+		return session, nil
+	case models.ErrSqlNoRows:
+		return nil, models.ErrSqlNoRows
+	default:
+		return nil, err
+	}
+}

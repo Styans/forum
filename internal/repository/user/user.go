@@ -39,7 +39,12 @@ func (s *UserStorage) CreateUser(user *models.User) error {
 // for authentification user=============================================
 func (s *UserStorage) GetUserByUsername(username string) (*models.User, error) {
 	var user models.User
-	err := s.db.QueryRow("SELECT * FROM user WHERE username = $1", username).Scan(&user.ID, &user.Username, &user.HashedPW, &user.Email)
+	err := s.db.QueryRow("SELECT * FROM user WHERE username = $1", username).Scan(
+		&user.ID,
+		&user.Username,
+		&user.HashedPW,
+		&user.Email,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +54,13 @@ func (s *UserStorage) GetUserByUsername(username string) (*models.User, error) {
 
 func (s *UserStorage) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
-	err := s.db.QueryRow("SELECT * FROM user WHERE email = $1", email).Scan(&user.ID, &user.Username, &user.HashedPW, &user.Email, &user.CreatedAt, &user.UpdatedAt)
+	err := s.db.QueryRow("SELECT * FROM user WHERE email = $1", email).Scan(&user.ID,
+		&user.Username,
+		&user.HashedPW,
+		&user.Email,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +70,12 @@ func (s *UserStorage) GetUserByEmail(email string) (*models.User, error) {
 
 // for update user datas=========================================
 func (s *UserStorage) UpdateUser(user *models.User) error {
-	_, err := s.db.Exec("UPDATE user SET username = $1, hashed_pw = $2, email = $3 WHERE id = $4", user.Username, user.HashedPW, user.Email, user.ID)
+	_, err := s.db.Exec("UPDATE user SET username = $1, hashed_pw = $2, email = $3 WHERE id = $4",
+		user.Username,
+		user.HashedPW,
+		user.Email,
+		user.ID,
+	)
 	if err != nil {
 		return err
 	}
@@ -74,4 +90,20 @@ func (s *UserStorage) GetAllUsers() ([]*models.User, error) {
 // administration.UsersFuncs =====================================
 func (s *UserStorage) DeleteUser(user *models.User) error {
 	return nil
+}
+
+func (s *UserStorage) GetUserByID(id int) (*models.User, error) {
+	var user models.User
+	err := s.db.QueryRow("SELECT * FROM user WHERE id = $1", id).Scan(&user.ID,
+		&user.Username,
+		&user.HashedPW,
+		&user.Email,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

@@ -3,7 +3,6 @@ package service
 import (
 	"forum/internal/models"
 	"forum/internal/repository"
-
 	"forum/internal/service/comment"
 	"forum/internal/service/post"
 	"forum/internal/service/session"

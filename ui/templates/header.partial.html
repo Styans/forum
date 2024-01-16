@@ -4,6 +4,7 @@
     <div class="header_contain">
       <a href="#" class="logo"> </a>
       <p>Welcome</p>
+      
       {{if .AuthenticatedUser}}
       <div class="profil">
         <a href="#" class="userName">{{.AuthenticatedUser.Username}}</a>
@@ -15,6 +16,9 @@
         <a href="/user/register"> Reg-in </a>
       </div>
       {{end}}
+      <form action="/user/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
     </div>
   </div>
 </div>

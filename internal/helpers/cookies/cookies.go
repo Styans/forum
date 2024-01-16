@@ -4,6 +4,8 @@ import "net/http"
 
 
 const cookieName = "UUID"
+
+
 func SetCookie(w http.ResponseWriter, val string, maxage int) {
 	c := &http.Cookie{
 		Name:     cookieName,
