@@ -4,18 +4,133 @@
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
     color: #fff;
-}
-
-body {
+  }
+  
+  body {
     background-color: rgb(24, 25, 31);
-}
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .site-header {
+    background-color: rgb(255, 255, 255);
+    padding: 0.5em 1em;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .site-identity {
+    display: flex;
+    align-items: center;
+  }
+  
+  .site-identity h1 {
+    font-size: 1.1em;
+    margin: 0.5em 0 0.3em 0;
+    display: inline-block;
+    color: black;
+    top: 36px;
+    left: 90px;
+    width: 72px;
+    height: 19px;
+  }
+  
+  .site-identity img {
+    max-width: 30px;
+    margin-top: 20%;
+  }
+  
+  .site-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profil {
+    margin-right: 15px;
+    color: rgb(0, 0, 0);
+  }
+  
+  .logout-button {
+    height: 38px;
+    overflow: visible;
+    line-height: normal;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all .4s;
+    text-align: center;
+    font-size: 16px;
+    color: white;
+    border-color: black;
+    background-color: black;
+  }
+  
+  .logout-button:hover {
+    opacity: .8;
+  }
+  
+  .login-button {
+    height: 38px;
+    overflow: visible;
+    line-height: normal;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all .4s;
+    text-align: center;
+    font-size: 16px;
+    color: white;
+    border-color: #1524f0;
+    background-color: #1524f0;
+  }
 
-.header {
-    background-color: rgb(43, 43, 43);
-    height: 54px;
-}
+  .login-button {
+    opacity: .8;
+  }
 
-.container  {
+  .regin-button {
+    height: 38px;
+    overflow: visible;
+    line-height: normal;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all .4s;
+    text-align: center;
+    font-size: 16px;
+    color: white;
+    border-color: #F48023;
+    background-color: #F48023;
+  }
+
+  .regin-button {
+    opacity: .8;
+  }
+
+  .container {
     width: 975px;
     margin: 0 auto;
-}
+    flex: 1; 
+  }
+  
+  .footer {
+    background-color: rgb(43, 43, 43);
+    padding: 20px;
+    text-align: center;
+    color: #333;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    margin-top: auto;
+  }

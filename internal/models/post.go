@@ -35,7 +35,7 @@ type DeletePostDTO struct {
 }
 
 type PostService interface {
-	CreatePost(post *CreatePostDTO) error
+	CreatePost(p *CreatePostDTO) error
 	CreatePostWithImage(post *CreatePostDTO) error
 	GetAllPosts(offset, limit int) ([]*Post, error)
 	GetPostsByAuthorID(author int) ([]*Post, error)
@@ -45,4 +45,5 @@ type PostService interface {
 
 type PostRepo interface {
 	GetAllPosts(offset, limit int) ([]*Post, error)
+	CreatePost(p *Post) error
 }

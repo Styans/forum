@@ -13,8 +13,7 @@ func (h *Handler) Routes() http.Handler {
 	mux.HandleFunc("/user/register", h.register)
 	mux.HandleFunc("/user/login", h.login)
 	mux.HandleFunc("/user/logout", h.logout)
-
-	// mux.HandleFunc("/", h.isAuth(rateLimit(h.home)))
+	mux.HandleFunc("/post/create", h.createPost)
 	mux.HandleFunc("/", h.home)
 
 	return h.authenticate(mux)

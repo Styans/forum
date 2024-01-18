@@ -1,25 +1,28 @@
 {{define "header"}}
-<div class="header">
-  <div class="container">
-    <div class="header_contain">
-      <a href="#" class="logo"> </a>
-      <p>Welcome</p>
-      
-      {{if .AuthenticatedUser}}
-      <div class="profil">
-        <a href="#" class="userName">{{.AuthenticatedUser.Username}}</a>
-      </div>
-      {{else}}
-      <div class="profil">
-        <a href="/user/login"> Log-in </a>
-        /
-        <a href="/user/register"> Reg-in </a>
-      </div>
-      {{end}}
-      <form action="/user/logout" method="POST">
-        <button type="submit">Logout</button>
-    </form>
+<header class="site-header">
+
+  <div class="site-identity">
+    <a href="/"><img src="/static/assets/logo.png" alt="Logo" /></a>
+    <h1><a href="/">Forum</a></h1>
+  </div>  
+
+  <nav class="site-navigation">
+    {{if .AuthenticatedUser}}
+    <div class="profil">
+      <a href="#" class="userName">{{.AuthenticatedUser.Username}}</a>
     </div>
-  </div>
-</div>
+    <form action="/user/logout" method="POST">
+      <button class="logout-button" type="submit">Logout</button>
+    </form>
+    {{else}}
+    <div class="profil">
+      <a href="/user/login" button class="login-button"> Log-in </a>
+
+      <a href="/user/register" button class="regin-button"> Reg-in </a>
+    </div>
+    {{end}}
+  </nav>
+  
+  
+</header>
 {{end}}

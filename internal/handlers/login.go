@@ -26,7 +26,7 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid POST request", http.StatusInternalServerError)
 			return
 		}
-
+		
 		req := &models.LoginUserDTO{
 			Email:    r.FormValue("email"),
 			Username: r.FormValue("username"),

@@ -28,5 +28,4 @@ func GetConfig(path string) (*Config, error) {
 	}
 
 	return c, nil
-
 }

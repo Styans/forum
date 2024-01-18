@@ -15,7 +15,7 @@ func NewUserStorage(db *sql.DB) *UserStorage {
 
 // registration user ===================================================
 func (s *UserStorage) CreateUser(user *models.User) error {
-	_, err := s.db.Exec("INSERT INTO user (username, hashed_pw, email, created_at, updated_at) VALUES ($1, $2, $3, $4, $5)",
+	_, err := s.db.Exec("INSERT INTO users (username, hashed_pw, email, created_at, updated_at) VALUES ($1, $2, $3, $4, $5)",
 		user.Username,
 		user.HashedPW,
 		user.Email,
@@ -39,7 +39,7 @@ func (s *UserStorage) CreateUser(user *models.User) error {
 // for authentification user=============================================
 func (s *UserStorage) GetUserByUsername(username string) (*models.User, error) {
 	var user models.User
-	err := s.db.QueryRow("SELECT * FROM user WHERE username = $1", username).Scan(
+	err := s.db.QueryRow("SELECT * FROM users WHERE username = $1", username).Scan(
 		&user.ID,
 		&user.Username,
 		&user.HashedPW,
@@ -54,7 +54,7 @@ func (s *UserStorage) GetUserByUsername(username string) (*models.User, error) {
 
 func (s *UserStorage) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
-	err := s.db.QueryRow("SELECT * FROM user WHERE email = $1", email).Scan(&user.ID,
+	err := s.db.QueryRow("SELECT * FROM users WHERE email = $1", email).Scan(&user.ID,
 		&user.Username,
 		&user.HashedPW,
 		&user.Email,
@@ -70,7 +70,7 @@ func (s *UserStorage) GetUserByEmail(email string) (*models.User, error) {
 
 // for update user datas=========================================
 func (s *UserStorage) UpdateUser(user *models.User) error {
-	_, err := s.db.Exec("UPDATE user SET username = $1, hashed_pw = $2, email = $3 WHERE id = $4",
+	_, err := s.db.Exec("UPDATE users SET username = $1, hashed_pw = $2, email = $3 WHERE id = $4",
 		user.Username,
 		user.HashedPW,
 		user.Email,
@@ -94,7 +94,7 @@ func (s *UserStorage) DeleteUser(user *models.User) error {
 
 func (s *UserStorage) GetUserByID(id int) (*models.User, error) {
 	var user models.User
-	err := s.db.QueryRow("SELECT * FROM user WHERE id = $1", id).Scan(&user.ID,
+	err := s.db.QueryRow("SELECT * FROM users WHERE id = $1", id).Scan(&user.ID,
 		&user.Username,
 		&user.HashedPW,
 		&user.Email,

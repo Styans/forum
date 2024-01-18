@@ -17,12 +17,15 @@ func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 
 	cookie, err := cookies.GetCookie(r)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		// http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	err = h.service.SessionService.DeleteSessionByUUID(cookie.Value)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	cookies.DeleteCookie(w)

@@ -15,8 +15,28 @@
     {{template "header" .}}
     <div class="wrapper">
         <div class="container">
-
+            <div class="posts">
+                <div class="title">Latest Posts
+                    {{range .Posts}}
+                    <tr>
+                        <td><a href="/post/{{.ID}}">{{.Title}}</a></td>
+                        <td>{{.AuthorName}}</td>
+                        <td>{{humanDate .CreatedAt}}</td>
+                        <td>{{.Title}}</td>
+                        <td>{{.Content}}</td>
+                    </tr>
+                    {{end}}
+                </div>
+                    
+            </div>
+            <!-- <form action="" method="post"></form> -->
         </div>     
+        <form action='/post/create' method='POST' >
+            <input type="text" name="title" id="">
+            <textarea name="content"></textarea>
+            <input type="file" name="image">
+            <button type="submit">publish</button>
+        </form>
     </div>
     {{template "footer" .}}
 

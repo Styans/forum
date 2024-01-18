@@ -33,6 +33,10 @@ func (s *SessionService) CreateSession(userId int) (*models.Session, error) {
 }
 
 func (s *SessionService) DeleteSessionByUUID(uuid string) error {
+	_, err := s.repo.GetSessionByUUID(uuid)
+	if err != nil {
+		return err
+	}
 	return s.repo.DeleteSessionByUUID(uuid)
 }
 
