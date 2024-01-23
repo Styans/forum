@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"forum/internal/helpers/cookies"
 	"net/http"
 	"time"
 )
+
 
 func (h *Handler) authenticate(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -17,6 +19,7 @@ func (h *Handler) authenticate(next http.Handler) http.Handler {
 
 		session, err := h.service.SessionService.GetSessionByUUID(cookie.Value)
 		if err != nil {
+			fmt.Println(err)
 			cookies.DeleteCookie(w)
 			next.ServeHTTP(w, r)
 			return

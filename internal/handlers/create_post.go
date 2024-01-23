@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"forum/internal/models"
+	"forum/pkg/forms"
 	"net/http"
+	"strings"
 )
 
 func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
@@ -12,41 +14,59 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method != http.MethodPost {
-		http.Error(w, "incorrect Method", http.StatusMethodNotAllowed)
+		http.Error(w, "Incorrect Method", http.StatusMethodNotAllowed)
 		return
 	}
 
-	err := r.ParseForm()
-	if err != nil {
+	if err := r.ParseMultipartForm(10); err != nil {
 		http.Error(w, "Invalid POST request", http.StatusInternalServerError)
 		return
 	}
-
 	autor := h.getUserFromContext(r)
 	post := &models.CreatePostDTO{
+		Title:      r.PostFormValue("title"),
+		Content:    r.PostFormValue("content"),
 		Author:     autor.ID,
 		AuthorName: autor.Username,
-		Title:      r.FormValue("title"),
-		Content:    r.FormValue("content"),
+		// Categories: categories,
 	}
-	// fmt.Println(r.FormValue("title"))
-	// fmt.Println(r.FormValue("content"))
-	// fmt.Println(post)
-	// file, file_header, err := r.FormFile("imagefile")
-	// filetype := file_header.Header.Get("Content-type")
 
-	// switch {
-	// case err != nil:
-	// 	http.Error(w, err.Error(), http.StatusMethodNotAllowed)
-	// 	return
-	// case !forms.IsImg(filetype):
-	// 	http.Error(w, err.Error(), http.StatusMethodNotAllowed)
-	// 	return
-	// }
-
-	// post.ImageFile = file
-	err = h.service.PostService.CreatePost(post)
+	file, fileHeader, err := r.FormFile("image")
 	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fileType := fileHeader.Header.Get("Content-Type")
+
+	if !forms.IsImg(fileType) {
+		http.Error(w, "nil", http.StatusInternalServerError)
+		return
+	}
+
+	post.ImageFile = file
+	defer file.Close()
+	datas := r.PostFormValue("category")
+	tempD := strings.Split(datas, ",")
+	for i, v := range tempD {
+		tempD[i] = strings.TrimSpace(v)
+	}
+	categories := make([]*models.Category, 0, len(tempD))
+	for _, name := range tempD {
+		c, err := h.service.CategoryService.GetCategoryByName(name)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		} else {
+			categories = append(categories, c)
+		}
+	}
+
+	post.Categories = append(post.Categories, categories...)
+	_, err = h.service.PostService.CreatePostWithImage(post)
+
+	if err != nil {
+
 		http.Error(w, err.Error(), http.StatusMethodNotAllowed)
 		return
 	}

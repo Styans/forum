@@ -16,15 +16,23 @@ func NewSessionService(repo models.SessionRepo) *SessionService {
 }
 
 func (s *SessionService) CreateSession(userId int) (*models.Session, error) {
+	oldSession, _ := s.repo.GetSessionByUserID(userId)
+	if oldSession != nil {
+		err := s.repo.DeleteSessionByUUID(oldSession.UUID)
+		if err != nil {
+			return nil, err
+		}
+	}
 	uuid, err := uuid.NewV4()
 	if err != nil {
 		return nil, err
 	}
 	session := &models.Session{
-		UUID:     uuid.String(),
 		User_id:  userId,
+		UUID:     uuid.String(),
 		ExpireAt: time.Now().Add(time.Hour),
 	}
+
 	err = s.repo.CreateSession(session)
 	if err != nil {
 		return nil, err

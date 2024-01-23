@@ -4,6 +4,5 @@ CREATE TABLE IF NOT EXISTS users (
     hashed_pw TEXT NOT NULL,
     email TEXT NOT NULL,
     created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
-    version INTEGER NOT NULL DEFAULT 1
+    updated_at DATETIME NOT NULL
 );

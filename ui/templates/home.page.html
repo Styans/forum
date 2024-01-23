@@ -1,44 +1,60 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>platform</title>
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
-    {{template "header" .}}
+    <link rel="stylesheet" href="static/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="wrapper">
+      {{template "header" .}}
+      <!-- ====================================================== -->
+      <div class="main">
         <div class="container">
-            <div class="posts">
-                <div class="title">Latest Posts
-                    {{range .Posts}}
-                    <tr>
-                        <td><a href="/post/{{.ID}}">{{.Title}}</a></td>
-                        <td>{{.AuthorName}}</td>
-                        <td>{{humanDate .CreatedAt}}</td>
-                        <td>{{.Title}}</td>
-                        <td>{{.Content}}</td>
-                    </tr>
-                    {{end}}
-                </div>
+          <div class="main_page">
+            {{template "nav_bar" .}}
+            <div class="main_posts_datas fl_r">
+              {{if .AuthenticatedUser}} {{template "create_post" .}} {{end}}
+              <div class="posts">
+                {{range .Posts}}
+                <div class="post-table">
+                  <div class="post-ctg">
+                    {{range .Categories}} {{.Name}} {{end}}
+                  </div>
+                  <div class="post-autor-datas">
+                    <div class="post-autorname">{{.AuthorName}}</div>
+                    <div class="post-createdtime">{{humanDate .CreatedAt}}</div>
+                  </div>
+                  <div class="post-content-datas">
+                    <div class="post-title">{{.Title}}</div>
+                    <div class="post-content">{{.Content}}</div>
+                  </div>
+                  <div class="post-reactions-datas">
                     
+                    <!-- reactions -->
+                  </div>
+                  <div class="post-comments-datas">
+                    <!-- coments -->
+                  </div>
+                </div>
+                {{end}}
+              </div>
             </div>
-            <!-- <form action="" method="post"></form> -->
-        </div>     
-        <form action='/post/create' method='POST' >
-            <input type="text" name="title" id="">
-            <textarea name="content"></textarea>
-            <input type="file" name="image">
-            <button type="submit">publish</button>
-        </form>
+          </div>
+        </div>
+      </div>
+      <!-- ====================================================== -->
+      {{template "footer" .}}
     </div>
-    {{template "footer" .}}
 
-</body>
+    <script src="static/js/main.js"></script>
+  </body>
 </html>

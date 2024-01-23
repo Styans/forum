@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3" // Import the SQLite driver
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func OpenDB(dsn string) (*sql.DB, error) {
@@ -22,5 +22,5 @@ func OpenDB(dsn string) (*sql.DB, error) {
 		return nil, err
 	}
 
-	return db, nil
+	return db, err
 }

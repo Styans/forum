@@ -36,15 +36,21 @@ func (u *UserService) CreateUser(userDTO *models.CreateUserDTO) error {
 }
 
 func (u *UserService) LoginUser(userDTO *models.LoginUserDTO) (int, error) {
-	user, err := u.GetUserByEmail(userDTO.Email)
+	user, err := u.repo.GetUserByEmail(userDTO.Email)
 	if err != nil {
-		return 0, err
+		switch err {
+		case models.ErrSqlNoRows:
+			return 0, models.ErrInvalidCredentials
+		default:
+			return 0, err
+		}
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPW), []byte(userDTO.Password))
 	if err != nil {
-		return 0, err
+		return 0, models.ErrInvalidCredentials
 	}
+
 	return user.ID, nil
 }
 

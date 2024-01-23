@@ -15,7 +15,7 @@ func NewPostStorage(db *sql.DB) *PostStorage {
 	return &PostStorage{db: db}
 }
 
-func (s *PostStorage) CreatePost(p *models.Post) error {
+func (s *PostStorage) CreatePost(p *models.Post) (int, error) {
 	query := `INSERT INTO posts (title, content, author_id, authorname, created_at, updated_at) 
 	VALUES ($1, $2, $3, $4, $5, $6)
 	RETURNING id, created_at, updated_at`
@@ -27,10 +27,61 @@ func (s *PostStorage) CreatePost(p *models.Post) error {
 
 	err := s.db.QueryRowContext(ctx, query, args...).Scan(&p.ID, &p.CreatedAt, &p.UpdatedAt)
 	if err != nil {
-		return err
+		return 0, err
 		// return 0, err
 	}
-	return nil
+
+	for _, category := range p.Categories {
+
+		query = `INSERT INTO PostCategories (post_id, category_name) VALUES ($1, $2)`
+		_, err = s.db.ExecContext(ctx, query, p.ID, category.Name)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	return p.ID, nil
+}
+
+func (s *PostStorage) CreatePostWithImage(p *models.Post) (int, error) {
+	query := `INSERT INTO posts (title, content, author_id, authorname, created_at, updated_at) 
+	VALUES ($1, $2, $3, $4, $5, $6) 
+	RETURNING id, created_at, updated_at`
+
+	args := []interface{}{p.Title, p.Content, p.AuthorID, p.AuthorName, p.CreatedAt, p.UpdatedAt, p.ImagePath}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	err := s.db.QueryRowContext(ctx, query, args...).Scan(&p.ID, &p.CreatedAt, &p.UpdatedAt)
+	if err != nil {
+		return 0, err
+	}
+
+	// Create post_categories entries
+	// fmt.Println(p)
+
+	for _, category := range p.Categories {
+		// fmt.Println("================================================")
+
+		// fmt.Println(category)
+		// fmt.Println(p)
+		// fmt.Println("================================================")
+		query = `INSERT INTO PostCategories (post_id, category_name) VALUES ($1, $2)`
+		_, err = s.db.ExecContext(ctx, query, p.ID, category.Name)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	// Create image entry
+	query = `INSERT INTO images (post_id, image_path) VALUES ($1, $2)`
+	_, err = s.db.ExecContext(ctx, query, p.ID, p.ImagePath)
+	if err != nil {
+		return 0, err
+	}
+
+	return p.ID, nil
 }
 
 func (s *PostStorage) DeletePost(post *models.Post) error {

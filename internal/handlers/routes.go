@@ -15,6 +15,7 @@ func (h *Handler) Routes() http.Handler {
 	mux.HandleFunc("/user/logout", h.logout)
 	mux.HandleFunc("/post/create", h.createPost)
 	mux.HandleFunc("/", h.home)
+	mux.HandleFunc("/posts", h.GetPosts)
 
 	return h.authenticate(mux)
 }

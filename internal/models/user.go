@@ -14,13 +14,13 @@ type User struct {
 type CreateUserDTO struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Email    string `json:"email,omitempty"`
+	Email    string `json:"email"`
 }
 
 type LoginUserDTO struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Email    string `json:"email,omitempty"`
+	Email    string `json:"email"`
 }
 
 type UserService interface {

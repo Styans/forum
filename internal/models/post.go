@@ -13,12 +13,19 @@ type Post struct {
 	AuthorName string    `json:"authorname"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
-	Image      []byte    `json:"image"`
+
+	Categories []*Category `json:"category_id"`
+	Comments   []*Comment  `json:"comments"`
+	Likes      int         `json:"likes"`
+	Dislikes   int         `json:"dislikes"`
+	ImagePath  string      `json:"image_path"`
+	Image      []byte      `json:"image"`
 }
 
 type CreatePostDTO struct {
 	Title      string         `json:"title"`
 	Content    string         `json:"content"`
+	Categories []*Category    `json:"category_id"`
 	Author     int            `json:"author"`
 	AuthorName string         `json:"authorname"`
 	ImageFile  multipart.File `json:"imagefile"`
@@ -35,15 +42,19 @@ type DeletePostDTO struct {
 }
 
 type PostService interface {
-	CreatePost(p *CreatePostDTO) error
-	CreatePostWithImage(post *CreatePostDTO) error
+	CreatePost(p *CreatePostDTO) (int, error)
+	CreatePostWithImage(post *CreatePostDTO) (int, error)
+
 	GetAllPosts(offset, limit int) ([]*Post, error)
 	GetPostsByAuthorID(author int) ([]*Post, error)
 	UpdatePost(post *Post) error
 	DeletePost(id int) error
+
 }
 
 type PostRepo interface {
+	CreatePost(p *Post) (int, error)
+	CreatePostWithImage(post *Post) (int, error)
 	GetAllPosts(offset, limit int) ([]*Post, error)
-	CreatePost(p *Post) error
+
 }

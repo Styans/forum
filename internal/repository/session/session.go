@@ -49,7 +49,7 @@ func (s *SessionStorage) DeleteSessionByUUID(sessionID string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 

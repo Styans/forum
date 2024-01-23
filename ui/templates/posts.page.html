@@ -1,0 +1,19 @@
+{{range .Posts}}
+<div class="post-table">
+  <div class="post-ctg">{{range .Categories}} {{.Name}} {{end}}</div>
+  <div class="post-autor-datas">
+    <div class="post-autorname">{{.AuthorName}}</div>
+    <div class="post-createdtime">{{humanDate .CreatedAt}}</div>
+  </div>
+  <div class="post-content-datas">
+    <div class="post-title">{{.Title}}</div>
+    <div class="post-content">{{.Content}}</div>
+  </div>
+  <div class="post-reactions-datas">
+    <!-- reactions -->
+  </div>
+  <div class="post-comments-datas">
+    <!-- coments -->
+  </div>
+</div>
+{{end}}
