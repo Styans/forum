@@ -11,15 +11,15 @@
         </div>
       </div>
       <div class="header_item-gap fl_r">
-        <div class="page_name">News</div>
+        <div class="page_name">{{.Topic}}</div>
         <div>
           {{if .AuthenticatedUser}}
           <div class="profil">
             <div class="username">{{.AuthenticatedUser.Username}}</div>
             <!-- <img
-              src="/static/assets/standard_profil_logo.png"
-              alt=""
-              class="user_img"
+                src="/static/assets/standard_profil_logo.png"
+                alt=""
+                class="user_img"
             /> -->
             <div class="butn"></div>
             <div class="btn_updown">
@@ -29,13 +29,9 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="profil">
-            <a href="#" class="userName">{{.AuthenticatedUser.Username}}</a>
-          
-            <a href="/user/logout" class="button-header">Logout</a>
-          
-          </div> -->
+          <div class="profil_nav_bar">
+            <a href="/user/logout" class="header-logout-btn">logout</a>
+          </div>
 
           {{else}}
           <div class="profil">

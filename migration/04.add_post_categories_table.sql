@@ -9,5 +9,3 @@ CREATE TABLE IF NOT EXISTS PostCategories (
   FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
   FOREIGN KEY (category_name) REFERENCES categories(category_name) ON DELETE CASCADE
 );
-
-INSERT INTO categories (category_name) VALUES ('books');

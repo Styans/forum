@@ -31,6 +31,7 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
+	h.service.PostReactionService.GetAllPostReactionsByPostID(posts)
 	categories, err := h.service.CategoryService.GetAllCategories()
 
 	if err != nil {
@@ -40,6 +41,7 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.templates.Render(w, r, "home.page.html", &render.PageData{
+		Topic:             "News",
 		Categories:        categories,
 		Form:              form,
 		Posts:             posts,
@@ -48,6 +50,16 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetPosts(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println(r.URL.Path)
+	// if r.URL.Path == "/posts" {
+	// 	// http.Error(w, "Not found", http.StatusNotFound)
+	// 	return
+	// }
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Incorrect Method", http.StatusMethodNotAllowed)
+		return
+	}
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
 	if err != nil {
 		limit = 10

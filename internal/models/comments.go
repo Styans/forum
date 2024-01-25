@@ -1,10 +1,16 @@
 package models
 
 type Comment struct {
+	Id       int    `json:"id"`
+	UserName string `json:"userName"`
+	UserId   int    `json:"user_id"`
+	Comment  string `json:"comment"`
+	PostId   int    `json:"post_id"`
 }
 
-type CommentDTO struct {
-}
+type CommentDTO struct{}
+
+
 type CommentRepo interface {
 	GetAllComments() ([]*Comment, error)
 	CreateComment(comment *Comment) error

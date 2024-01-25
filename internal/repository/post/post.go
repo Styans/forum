@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"forum/internal/models"
+	"log"
 	"time"
 )
 
@@ -58,15 +59,8 @@ func (s *PostStorage) CreatePostWithImage(p *models.Post) (int, error) {
 		return 0, err
 	}
 
-	// Create post_categories entries
-	// fmt.Println(p)
-
 	for _, category := range p.Categories {
-		// fmt.Println("================================================")
 
-		// fmt.Println(category)
-		// fmt.Println(p)
-		// fmt.Println("================================================")
 		query = `INSERT INTO PostCategories (post_id, category_name) VALUES ($1, $2)`
 		_, err = s.db.ExecContext(ctx, query, p.ID, category.Name)
 		if err != nil {
@@ -74,7 +68,6 @@ func (s *PostStorage) CreatePostWithImage(p *models.Post) (int, error) {
 		}
 	}
 
-	// Create image entry
 	query = `INSERT INTO images (post_id, image_path) VALUES ($1, $2)`
 	_, err = s.db.ExecContext(ctx, query, p.ID, p.ImagePath)
 	if err != nil {
@@ -100,6 +93,8 @@ func (s *PostStorage) GetAllPosts(offset, limit int) ([]*models.Post, error) {
 
 	rows, err := s.db.QueryContext(ctx, query, limit, offset)
 	if err != nil {
+		log.Println(err)
+
 		return nil, err
 	}
 	defer rows.Close()
@@ -109,7 +104,8 @@ func (s *PostStorage) GetAllPosts(offset, limit int) ([]*models.Post, error) {
 	for rows.Next() {
 		post := models.Post{}
 
-		err := rows.Scan(&post.ID,
+		err := rows.Scan(
+			&post.ID,
 			&post.Title,
 			&post.Content,
 			&post.AuthorID,
@@ -118,6 +114,47 @@ func (s *PostStorage) GetAllPosts(offset, limit int) ([]*models.Post, error) {
 			&post.UpdatedAt,
 		)
 		if err != nil {
+			log.Println(err)
+
+			return nil, err
+		}
+
+		query = `SELECT c.category_name FROM categories c
+		JOIN PostCategories pc ON c.category_name = pc.category_name
+		WHERE pc.post_id = $1`
+		category_rows, err := s.db.QueryContext(ctx, query, post.ID)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+
+		for category_rows.Next() {
+			category := models.Category{}
+
+			err := category_rows.Scan(&category.Name)
+			if err != nil {
+				log.Println(err)
+
+				return nil, err
+			}
+
+			post.Categories = append(post.Categories, &category)
+		}
+		query = `SELECT image_path FROM images WHERE post_id = $1`
+		img_row := s.db.QueryRowContext(ctx, query, post.ID)
+
+		err = img_row.Scan(&post.ImagePath)
+		if err != nil {
+			switch err {
+			case sql.ErrNoRows:
+				post.ImagePath = ""
+				return posts, nil
+			default:
+				return nil, err
+			}
+		}
+		if err := category_rows.Err(); err != nil {
+			log.Println(err)
 			return nil, err
 		}
 

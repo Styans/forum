@@ -48,7 +48,12 @@ func (p *PostService) CreatePostWithImage(postDTO *models.CreatePostDTO) (int, e
 		return 0, err
 	}
 	filePath := "ui/static/img/" + fileName.String()
+	err = ioutil.WriteFile(filePath, data, 0o666)
 
+	if err != nil {
+		return 0, err
+	}
+	filePath = filePath[2:]
 	post := &models.Post{
 		Title:      postDTO.Title,
 		Content:    postDTO.Content,
@@ -61,11 +66,6 @@ func (p *PostService) CreatePostWithImage(postDTO *models.CreatePostDTO) (int, e
 	}
 
 	id, err := p.repo.CreatePostWithImage(post)
-	if err != nil {
-		return 0, err
-	}
-
-	err = ioutil.WriteFile(filePath, data, 0o666)
 	if err != nil {
 		return 0, err
 	}

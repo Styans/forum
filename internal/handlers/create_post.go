@@ -18,7 +18,7 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := r.ParseMultipartForm(10); err != nil {
+	if err := r.ParseMultipartForm(20); err != nil {
 		http.Error(w, "Invalid POST request", http.StatusInternalServerError)
 		return
 	}

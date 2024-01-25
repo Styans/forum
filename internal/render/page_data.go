@@ -6,6 +6,7 @@ import (
 )
 
 type PageData struct {
+	Topic             string
 	Form              *forms.Form
 	AuthenticatedUser *models.User
 	Posts             []*models.Post

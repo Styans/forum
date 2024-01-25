@@ -15,10 +15,16 @@
         name="content"
         id="myTextarea"
         oninput="adjustTextarea()"
+        placeholder="bla bla bla ..."
       ></textarea>
     </div>
     <div class="ffl-r">
-      <input type="text" name="title" class="pst-tt-upl d-b" value="" />
+      <input
+        type="text"
+        name="title"
+        class="pst-tt-upl d-b"
+        placeholder="Title"
+      />
       <div class="img-upld ffl-l">
         <input
           type="file"
@@ -27,7 +33,7 @@
           accept="image/*"
           onchange="previewImage(event)"
           class="img-upload d-b"
-          value=" "
+          placeholder=":)"
         />
         <label id="file-input-label" for="image-input"></label>
         <div id="image-preview" class="uploading-img-prev"></div>
@@ -41,6 +47,7 @@
               readonly="false"
               name="category"
               onclick="toggleList()"
+              placeholder="category"
             />
           </div>
           <div id="listContainer" class="list-container" style="display: none">
