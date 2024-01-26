@@ -1,26 +1,33 @@
 package models
 
+import "time"
+
 type Comment struct {
-	Id       int    `json:"id"`
-	UserName string `json:"userName"`
-	UserId   int    `json:"user_id"`
-	Comment  string `json:"comment"`
-	PostId   int    `json:"post_id"`
+	ID         int       `json:"id"`
+	Content    string    `json:"content"`
+	AuthorID   int       `json:"author_id"`
+	AuthorName string    `json:"authorname"`
+	PostID     int       `json:"post_id"`
+	CreatedAt  time.Time `json:"created_at"`
+	Likes      int       `json:"likes"`
+	Dislikes   int       `json:"dislikes"`
 }
 
-type CommentDTO struct{}
-
+type CreateCommentDTO struct {
+	Content    string `json:"content"`
+	AuthorID   int    `json:"author_id"`
+	AuthorName string `json:"authorname"`
+	PostID     int    `json:"post_id"`
+}
 
 type CommentRepo interface {
-	GetAllComments() ([]*Comment, error)
 	CreateComment(comment *Comment) error
-	UpdateComment(comment *Comment) error
-	DeleteComment(id int) error
+	GetAllByPostID(postID int) ([]*Comment, error)
+	GetCommentByID(id int) (*Comment, error)
 }
 
 type CommentService interface {
-	GetAllComments() ([]*CommentDTO, error)
-	CreateComment(comment *CommentDTO) error
-	UpdateComment(comment *CommentDTO) error
-	DeleteComment(comment *CommentDTO) error
+	CreateComment(comment *CreateCommentDTO) error
+	GetAllByPostID(postID int) ([]*Comment, error)
+	// GetCommentByID(id int) (*Comment, error)
 }

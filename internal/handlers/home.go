@@ -17,15 +17,18 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
 	if err != nil {
+
 		limit = 10
 	}
 	offset, err := strconv.Atoi(r.URL.Query().Get("offset"))
 	if err != nil {
+
 		offset = 0
 	}
 	// limit := 10
 	// offset := 0
 	posts, err := h.service.PostService.GetAllPosts(offset, limit)
+	fmt.Println(posts)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "Not found", http.StatusNotFound)
@@ -50,11 +53,12 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetPosts(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println(r.URL.Path)
-	// if r.URL.Path == "/posts" {
-	// 	// http.Error(w, "Not found", http.StatusNotFound)
-	// 	return
-	// }
+	if r.URL.Path != "/posts" {
+		log.Println(r.URL.Path)
+
+		http.Error(w, "Not found", http.StatusNotFound)
+		return
+	}
 
 	if r.Method != http.MethodGet {
 		http.Error(w, "Incorrect Method", http.StatusMethodNotAllowed)
@@ -68,12 +72,10 @@ func (h *Handler) GetPosts(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		offset = 0
 	}
-	// limit := 10
-	// offset := 0
 	posts, err := h.service.PostService.GetAllPosts(offset, limit)
 	if err != nil {
 		log.Println(err)
-		http.Error(w, "Not found", http.StatusNotFound)
+		// http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
 	h.templates.Render(w, r, "posts.page.html", &render.PageData{Posts: posts})

@@ -9,6 +9,7 @@ type PageData struct {
 	Topic             string
 	Form              *forms.Form
 	AuthenticatedUser *models.User
+	Post              *models.Post
 	Posts             []*models.Post
 	Categories        []*models.Category
 }

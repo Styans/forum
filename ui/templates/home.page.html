@@ -25,30 +25,28 @@
               {{if .AuthenticatedUser}} {{template "create_post" .}} {{end}}
               <div class="posts">
                 {{range .Posts}}
-                <div class="post-table">
-                  <div class="post-header">
-                    <div class="post-autor-datas">
-                      <div class="post-autorname">{{.AuthorName}}</div>
-                      <div class="post-createdtime">
-                        {{humanDate .CreatedAt}}
+                <a href="/post/{{.ID}}">
+                  <div class="post-table">
+                    <div class="post-header">
+                      <div class="post-autor-datas">
+                        <div class="post-autorname">{{.AuthorName}}</div>
+                        <div class="post-createdtime">
+                          {{humanDate .CreatedAt}}
+                        </div>
+                      </div>
+                      <div class="post-ctg">
+                        {{range .Categories}}
+                        <pre class="post-category-anme">{{.Name}} </pre>
+                        {{end}}
                       </div>
                     </div>
-                    <div class="post-ctg">
-                      {{range .Categories}}
-                      <span class="post-category-anme"> {{.Name}} </span>
-                      {{end}}
+                    <div class="post-content-datas">
+                      <img src="{{.ImagePath}}" alt="" />
+                      <div class="post-title">{{.Title}}</div>
+                      <div class="post-content">{{.Content}}</div>
                     </div>
-                  </div>
-                  <div class="post-content-datas">
-                    <img src="{{.ImagePath}}" alt="" />
-                    <div class="post-title">{{.Title}}</div>
-                    <div class="post-content">{{.Content}}</div>
-                  </div>
-                  <div class="post-reactions-datas">
-                    <form action="/post/reaction" method="POST">
-                      <input type="hidden" name="post_id" value="{{.ID}}" />
-                      <input type="hidden" name="status" value="1" />
-                      <button type="submit">
+                    <div class="post-reactions-datas">
+                      <div class="reactions">
                         <img
                           src="/static/assets/8300917.png"
                           class="reaction"
@@ -56,26 +54,23 @@
                           alt="like button"
                         />
                         {{.Likes}}
-                      </button>
-                    </form>
-                    <form action="/post/reaction" method="POST">
-                      <input type="hidden" name="post_id" value="{{.ID}}" />
-                      <input type="hidden" name="status" value="0" />
-                      <button type="submit">
+                      </div>
+                      <div class="reactions">
                         <img
                           src="/static/assets/8300917.png"
                           class="reaction"
                           alt="dislike button"
                         />
                         {{.Dislikes}}
-                      </button>
-                    </form>
-                    <!-- reactions -->
+                      </div>
+
+                      <!-- reactions -->
+                    </div>
+                    <div class="post-comments-datas">
+                      <!-- coments -->
+                    </div>
                   </div>
-                  <div class="post-comments-datas">
-                    <!-- coments -->
-                  </div>
-                </div>
+                </a>
                 {{end}}
               </div>
             </div>

@@ -6,7 +6,7 @@ import (
 )
 
 func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/user/logout" {
+	if r.URL.Path != "/logout" {
 		http.Error(w, "Page not found", http.StatusNotFound)
 		return
 	}

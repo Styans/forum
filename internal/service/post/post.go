@@ -3,6 +3,7 @@ package post
 import (
 	"forum/internal/models"
 	"io/ioutil"
+	"strings"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -83,4 +84,19 @@ func (s *PostService) GetPostsByAuthorID(author int) ([]*models.Post, error) {
 
 func (s *PostService) GetAllPosts(offset, limit int) ([]*models.Post, error) {
 	return s.repo.GetAllPosts(offset, limit)
+}
+
+func (p *PostService) GetPostByID(id int) (*models.Post, error) {
+	post, err := p.repo.GetPostByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if post.ImagePath == "" {
+		return post, nil
+	}
+
+	post.ImagePath = ".." + strings.TrimPrefix(post.ImagePath, "ui")
+
+	return post, nil
 }

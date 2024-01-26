@@ -17,6 +17,15 @@
     <img src="/static/assets/likecomments.png" alt="" />
     <span>liked comments</span>
   </a>
+  <form action="#" method="GET">
+    {{range .Categories}}
+    <div>
+      <input type="radio" name="category" value="{{.Name}}" />
+      <label for="{{.Name}}">{{.Name}}</label>
+    </div>
+    {{end}}
+    <button type="submit">submit</button>
+  </form>
 </nav>
 
 {{end}}

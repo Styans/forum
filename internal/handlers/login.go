@@ -1,15 +1,17 @@
 package handlers
 
 import (
+	"fmt"
 	"forum/internal/helpers/cookies"
 	"forum/internal/models"
 	"forum/internal/render"
+	"forum/pkg/forms"
 	"net/http"
 	"time"
 )
 
 func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/user/login" {
+	if r.URL.Path != "/login" {
 		http.Error(w, "Page not found", http.StatusNotFound)
 		return
 	}
@@ -17,6 +19,7 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		h.templates.Render(w, r, "log.page.html", &render.PageData{
+			Form:              forms.New(nil),
 			AuthenticatedUser: h.getUserFromContext(r),
 		})
 	case http.MethodPost:
@@ -27,6 +30,22 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		form := forms.New(r.PostForm)
+		form.Required("email", "password")
+		form.MaxLength("email", 50)
+		form.MatchesPattern("email", forms.EmailRX)
+		form.MaxLength("password", 50)
+		form.MinLength("password", 8)
+
+		if !form.Valid() {
+			fmt.Println("ASdas")
+			w.WriteHeader(http.StatusBadRequest)
+			h.templates.Render(w, r, "log.page.html", &render.PageData{
+				Form: form,
+			})
+			return
+		}
+
 		req := &models.LoginUserDTO{
 			Email:    r.FormValue("email"),
 			Password: r.FormValue("password"),
@@ -34,7 +53,14 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 
 		user_id, err := h.service.UserService.LoginUser(req)
 		if err != nil {
-			http.Error(w, "User not found", http.StatusBadGateway)
+			if err == models.ErrInvalidCredentials {
+				form.Errors.Add("generic", "Email or password is incorrect")
+				h.templates.Render(w, r, "log.page.html", &render.PageData{
+					Form: form,
+				})
+				return
+			}
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 

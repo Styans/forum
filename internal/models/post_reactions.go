@@ -25,4 +25,5 @@ type PostReactionRepo interface {
 type PostReactionService interface {
 	CreatePostReaction(reaction *PostReactionDTO) error
 	GetAllPostReactionsByPostID(posts []*Post) error
+	PutReactionsToPost(post *Post) error
 }

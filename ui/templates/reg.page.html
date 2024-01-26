@@ -157,43 +157,29 @@
     </div>
 
 
-      <form action="/user/register" method="post">
+      <form action="/register" method="post">
+        {{with .Form}}
         <h3>Sign Up</h3>
-     
+        {{with .Errors.Get "generic"}}
+        <div class="error">{{.}}</div>
+        {{end}}
         <label>Username</label>
-        <input type="text" id="username" value="username" name="username" />
+        <input type="text" id="username" value="{{.Get "username"}}" name="username" />
    
-        <!-- <label for="username">Username</label>
-        <input type="text" placeholder="Username or Email" id="username">
-       -->
         </label>
+        {{with .Errors.Get "email"}}
+            <label class="error">{{.}}</label>
+        {{end}}
         <label for="username">Email</label>
-        <input type="email" id="email" value="email" name="email" />
-
+        <input type="email" id="email" value="{{.Get "email"}}" name="email" />
+        
         <label for="password">Password</label>
         <input type="password" placeholder="Create your password" id="password" name="password">
-      
+        {{with .Errors.Get "password"}}
+        <label class="error">{{.}}</label>
+        {{end}}
         <button>Sign up</button>
-
-      <!-- <div>
-        <label>Name:</label>
-        <input type="text" id="username" value="username" name="username" />
-      </div>
-      <div>
-        <label>Email:</label>
-        
-        <input type="email" id="email" value="email" name="email" />
-      </div>
-      <div>
-        <label>Password:</label>
-
-        <input type="password" id="password" name="password" />
-      </div> -->
-
-
-      <!-- <div>
-        <input type="submit" value="Signup">
-      </div> -->
+        {{end}}
     </form>
   </body>
 </html>

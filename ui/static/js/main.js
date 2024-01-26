@@ -175,3 +175,4 @@ function createObserver() {
 
   observer.observe(footer);
 }
+

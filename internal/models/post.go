@@ -44,17 +44,16 @@ type DeletePostDTO struct {
 type PostService interface {
 	CreatePost(p *CreatePostDTO) (int, error)
 	CreatePostWithImage(post *CreatePostDTO) (int, error)
-
+	GetPostByID(id int) (*Post, error)
 	GetAllPosts(offset, limit int) ([]*Post, error)
 	GetPostsByAuthorID(author int) ([]*Post, error)
 	UpdatePost(post *Post) error
 	DeletePost(id int) error
-
 }
 
 type PostRepo interface {
 	CreatePost(p *Post) (int, error)
 	CreatePostWithImage(post *Post) (int, error)
 	GetAllPosts(offset, limit int) ([]*Post, error)
-
+	GetPostByID(id int) (*Post, error)
 }

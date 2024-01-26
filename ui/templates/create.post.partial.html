@@ -16,6 +16,7 @@
         id="myTextarea"
         oninput="adjustTextarea()"
         placeholder="bla bla bla ..."
+        required
       ></textarea>
     </div>
     <div class="ffl-r">
@@ -24,9 +25,10 @@
         name="title"
         class="pst-tt-upl d-b"
         placeholder="Title"
+        required
       />
       <div class="img-upld ffl-l">
-        <input
+        <!-- <input
           type="file"
           id="image-input"
           name="image"
@@ -36,10 +38,10 @@
           placeholder=":)"
         />
         <label id="file-input-label" for="image-input"></label>
-        <div id="image-preview" class="uploading-img-prev"></div>
+        <div id="image-preview" class="uploading-img-prev"></div> -->
       </div>
       <div class="d-f ffl-r">
-        <div class="category m-7">
+        <div class="category m-7" >
           <div class="category-input-btn">
             <input
               type="text"
@@ -48,6 +50,7 @@
               name="category"
               onclick="toggleList()"
               placeholder="category"
+              required
             />
           </div>
           <div id="listContainer" class="list-container" style="display: none">

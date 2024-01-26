@@ -61,3 +61,23 @@ func (s *PostReactionService) GetAllPostReactionsByPostID(posts []*models.Post) 
 
 	return nil
 }
+
+func (s *PostReactionService) PutReactionsToPost(post *models.Post) error {
+	reactions, err := s.repo.GetPostReactionsByPostID(post.ID)
+	if err != nil {
+		if !errors.Is(err, sql.ErrNoRows) {
+			return err
+		}
+	}
+	var like, dislike int
+	for _, r := range reactions {
+		if !r.Status {
+			dislike++
+		} else {
+			like++
+		}
+	}
+	post.Likes = like
+	post.Dislikes = dislike
+	return nil
+}
