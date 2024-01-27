@@ -8,20 +8,21 @@ import (
 func (h *Handler) Routes() http.Handler {
 	mux := http.NewServeMux()
 	// add a css file to route
-	fileServer := http.FileServer(http.Dir("./ui/static"))
+	fileServer := http.FileServer((http.Dir("./ui/static")))
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
-	mux.HandleFunc("/register", h.register)
+	mux.HandleFunc("/", h.home)
 	mux.HandleFunc("/login", h.login)
+	mux.HandleFunc("/register", h.register)
 	mux.Handle("/logout", h.requireAuthentication(http.HandlerFunc(h.logout)))
 
+	mux.HandleFunc("/post/", h.showPost)
+	mux.HandleFunc("/posts", h.GetPosts)
 	mux.Handle("/post/create", h.requireAuthentication(http.HandlerFunc(h.createPost)))
 	mux.Handle("/post/reaction", h.requireAuthentication(http.HandlerFunc(h.reactionPost)))
-	mux.HandleFunc("/posts", h.GetPosts)
-	mux.HandleFunc("/post/", h.showPost)
-	// mux.HandleFunc("/ws", wsHandler)
 
-	mux.HandleFunc("/", h.home)
+	mux.Handle("/comment/create", h.requireAuthentication(http.HandlerFunc(h.createComment)))
+	mux.Handle("/comment/reaction", h.requireAuthentication(http.HandlerFunc(h.reactionComment)))
 
 	return h.authenticate(mux)
 }
@@ -52,12 +53,12 @@ func (nfs neuteredFileSystem) Open(path string) (http.File, error) {
 	return f, nil
 }
 
-func rateLimit(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		// here
-		next.ServeHTTP(w, r)
-	}
-}
+// func rateLimit(next http.HandlerFunc) http.HandlerFunc {
+// 	return func(w http.ResponseWriter, r *http.Request) {
+// 		// here
+// 		next.ServeHTTP(w, r)
+// 	}
+// }
 
 // позже изучить
 

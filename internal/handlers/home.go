@@ -25,10 +25,11 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 
 		offset = 0
 	}
+
 	// limit := 10
 	// offset := 0
 	posts, err := h.service.PostService.GetAllPosts(offset, limit)
-	fmt.Println(posts)
+
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "Not found", http.StatusNotFound)

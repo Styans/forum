@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"forum/internal/helpers/cookies"
 	"forum/internal/models"
 	"forum/internal/render"
@@ -38,7 +37,6 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 		form.MinLength("password", 8)
 
 		if !form.Valid() {
-			fmt.Println("ASdas")
 			w.WriteHeader(http.StatusBadRequest)
 			h.templates.Render(w, r, "log.page.html", &render.PageData{
 				Form: form,

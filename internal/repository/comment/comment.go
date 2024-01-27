@@ -2,6 +2,7 @@ package comment
 
 import (
 	"database/sql"
+	"fmt"
 	"forum/internal/models"
 )
 
@@ -14,7 +15,7 @@ func NewCommentStorage(db *sql.DB) *CommentStorage {
 }
 
 func (s CommentStorage) CreateComment(comment *models.Comment) error {
-	query := `INSERT INTO comments (content, post_id, author_id, authorname, created_at) VALUES (?, ?, ?, ?, ?)`
+	query := `INSERT INTO comments (comment, post_id, user_id, userName, created_at) VALUES (?, ?, ?, ?, ?)`
 	result, err := s.db.Exec(
 		query,
 		comment.Content,
@@ -39,9 +40,10 @@ func (s CommentStorage) CreateComment(comment *models.Comment) error {
 }
 
 func (s CommentStorage) GetAllByPostID(postID int) ([]*models.Comment, error) {
-	query := `SELECT id, content, post_id, author_id, authorname, created_at FROM comments WHERE post_id = ?`
+	query := `SELECT id, comment, post_id, user_id, userName, created_at FROM comments WHERE post_id = ?`
 	rows, err := s.db.Query(query, postID)
 	if err != nil {
+		fmt.Println(err, "Error getting comments")
 		return nil, err
 	}
 	defer rows.Close()
@@ -58,12 +60,15 @@ func (s CommentStorage) GetAllByPostID(postID int) ([]*models.Comment, error) {
 			&comment.CreatedAt,
 		)
 		if err != nil {
+			fmt.Println(err, "Error getting comments")
+
 			return nil, err
 		}
 		comments = append(comments, comment)
 	}
 
 	if err = rows.Err(); err != nil {
+
 		return nil, err
 	}
 
@@ -71,7 +76,7 @@ func (s CommentStorage) GetAllByPostID(postID int) ([]*models.Comment, error) {
 }
 
 func (s *CommentStorage) GetCommentByID(id int) (*models.Comment, error) {
-	query := `SELECT id, content, post_id, author_id, authorname, created_at FROM comments WHERE id = ?`
+	query := `SELECT id, comment, post_id, user_id, userName, created_at FROM comments WHERE id = ?`
 	row := s.db.QueryRow(query, id)
 
 	comment := &models.Comment{}

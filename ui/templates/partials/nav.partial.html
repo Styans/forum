@@ -13,19 +13,18 @@
     <img src="/static/assets/likepost.png" alt="" />
     <span>liked posts</span>
   </a>
-  <a href="#" class="nav-link">
-    <img src="/static/assets/likecomments.png" alt="" />
-    <span>liked comments</span>
-  </a>
-  <form action="#" method="GET">
-    {{range .Categories}}
-    <div>
-      <input type="radio" name="category" value="{{.Name}}" />
-      <label for="{{.Name}}">{{.Name}}</label>
-    </div>
-    {{end}}
-    <button type="submit">submit</button>
-  </form>
+  <div class="nav-form-ctg">
+    <form action="#" method="GET">
+      <input type="search" name="" id="">
+      {{range .Categories}}
+      <div>
+        <input type="radio" name="category" value="{{.Name}}" required />
+        <label for="{{.Name}}">{{.Name}}</label>
+      </div>
+      {{end}}
+      <button type="submit">submit</button>
+    </form>
+  </div>
 </nav>
 
 {{end}}

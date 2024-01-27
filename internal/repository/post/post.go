@@ -160,7 +160,6 @@ func (s *PostStorage) GetAllPosts(offset, limit int) ([]*models.Post, error) {
 			log.Println(err)
 			return nil, err
 		}
-		fmt.Println(posts)
 		posts = append(posts, &post)
 	}
 
@@ -207,6 +206,7 @@ func (s *PostStorage) GetPostByID(id int) (*models.Post, error) {
 
 	rows, err := s.db.QueryContext(ctx, query, id)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
@@ -222,6 +222,7 @@ func (s *PostStorage) GetPostByID(id int) (*models.Post, error) {
 	}
 
 	if err := rows.Err(); err != nil {
+
 		return nil, err
 	}
 
@@ -234,8 +235,11 @@ func (s *PostStorage) GetPostByID(id int) (*models.Post, error) {
 		switch err {
 		case sql.ErrNoRows:
 			post.ImagePath = ""
+
 			return post, nil
 		default:
+			// fmt.Println(err, "assssds")
+
 			return nil, err
 		}
 	}

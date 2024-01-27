@@ -9,6 +9,7 @@
     action="/post/create"
     method="post"
     enctype="multipart/form-data"
+    onsubmit="return validateForm();"
   >
     <div class="ffl-l">
       <textarea
@@ -41,7 +42,7 @@
         <div id="image-preview" class="uploading-img-prev"></div> -->
       </div>
       <div class="d-f ffl-r">
-        <div class="category m-7" >
+        <div class="category m-7">
           <div class="category-input-btn">
             <input
               type="text"

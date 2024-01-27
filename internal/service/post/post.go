@@ -93,6 +93,7 @@ func (p *PostService) GetPostByID(id int) (*models.Post, error) {
 	}
 
 	if post.ImagePath == "" {
+
 		return post, nil
 	}
 

@@ -1,7 +1,3 @@
-/* color: #888;
-background-color: #555;
-background-color: rgb(43, 43, 43);
-background-color: rgb(24, 25, 31); */
 
 /* ALL 
 ================================================= */
@@ -229,6 +225,8 @@ z-index: 10;
   color: #fff;
 }
 
+
+
 /* POSTS
 ================================================= */
 
@@ -245,7 +243,6 @@ z-index: 10;
   border-radius: 4px;
   font-family: 'Montserrat', sans-serif;
   margin-bottom: 10px;
-  padding-bottom: 10px;
   color: #fff;
   background-color: #3F3F3F;
 }
@@ -606,4 +603,30 @@ form {
 
 }
 
+/*  COMMENTS==================================================================== */
+.comments {
+  margin-top: 15px;
+  padding: 10px 10px 10px 10px;
+  border-radius: 4px;
+  background-color: #292929;
+  max-width: 550px;
+}
+.comment_form, .comment{
+  border-radius: 4px;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  background-color: #3F3F3F;
+} 
+.comment {
+  margin-bottom: 10px;
+}
 
+.comment-content {
+  word-wrap: break-word;
+  padding: 0 10px;
+}
+
+
+.nav-form-ctg label {
+  color: #fff;
+}

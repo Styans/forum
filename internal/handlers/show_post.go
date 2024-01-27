@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"forum/internal/render"
 	"net/http"
 	"strconv"
@@ -30,15 +31,15 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// comments, err := h.service.CommentService.GetAllByPostID(post.ID)
-	// if err != nil {
+	comments, err := h.service.CommentService.GetAllByPostID(post.ID)
+	if err != nil {
 
-	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-	// 	return
-	// }
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	// for _, comment := range comments {
-	// 	// comment.Likes, comment.Dislikes, err = h.service.CommentVoteService.GetLikesAndDislikes(comment.ID)
+	// 	// comment.Likes, comment.Dislikes, err = h.service
 	// 	if err != nil {
 	// 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	// 		return
@@ -47,14 +48,21 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 
 	err = h.service.PostReactionService.PutReactionsToPost(post)
 	if err != nil {
-		// h.logger.PrintError(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	categories, err := h.service.CategoryService.GetAllCategories()
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
 
 	h.templates.Render(w, r, "post.page.html", &render.PageData{
-		Post: post,
-		// Comments:          comments,
+		Post:              post,
+		Comments:          comments,
+		Categories:        categories,
 		AuthenticatedUser: h.getUserFromContext(r),
 	})
 }

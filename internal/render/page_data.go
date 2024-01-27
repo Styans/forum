@@ -12,4 +12,5 @@ type PageData struct {
 	Post              *models.Post
 	Posts             []*models.Post
 	Categories        []*models.Category
+	Comments          []*models.Comment
 }

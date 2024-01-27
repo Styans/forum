@@ -176,3 +176,18 @@ function createObserver() {
   observer.observe(footer);
 }
 
+function validateForm() {
+  var categoryInput = document.getElementById('inputField');
+  var titleInput = document.querySelector('.pst-tt-upl');
+  var contentTextarea = document.getElementById('myTextarea');
+
+  // Check if any of the required fields is empty
+  if (!categoryInput.value.trim() || !titleInput.value.trim() || !contentTextarea.value.trim()) {
+    alert('Please fill in all required fields: Category, Title, and Content.');
+    return false;
+  }
+
+  // Additional validation logic can be added here if needed
+
+  return true; // Form is valid, allow submission
+}

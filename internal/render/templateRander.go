@@ -22,7 +22,7 @@ var functions = template.FuncMap{
 func NewTemplateHTML(dir string) (TemplatesHTML, error) {
 	tmlp := map[string]*template.Template{}
 
-	pages, err := filepath.Glob(filepath.Join(dir, "*page.html"))
+	pages, err := filepath.Glob(filepath.Join(dir, "/page", "*page.html"))
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +35,7 @@ func NewTemplateHTML(dir string) (TemplatesHTML, error) {
 			return nil, err
 		}
 
-		ts, err = ts.ParseGlob(filepath.Join(dir, "*partial.html"))
+		ts, err = ts.ParseGlob(filepath.Join(dir, "/partials", "*partial.html"))
 		if err != nil {
 			return nil, err
 		}
