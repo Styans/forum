@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"forum/internal/models"
 	"forum/pkg/forms"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -15,14 +16,13 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method != http.MethodPost {
-		fmt.Println("err")
 
 		http.Error(w, "Incorrect Method", http.StatusMethodNotAllowed)
 		return
 	}
 
 	if err := r.ParseMultipartForm(20 << 20); err != nil {
-		fmt.Println(err)
+		h.service.Log.Println(err)
 
 		http.Error(w, "Invalid POST request", http.StatusInternalServerError)
 		return
@@ -32,12 +32,13 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 
 	form.Required("title", "content")
 	form.MaxLength("title", 100)
-	form.MaxLength("content", 10000)
+	form.MaxLength("content", 500)
 
 	if !form.Valid() {
 
 		categories, err := h.service.CategoryService.GetAllCategories()
 		if err != nil {
+			h.service.Log.Println(err)
 
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -45,7 +46,6 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 
 		form.Errors.Add("generic", "Form is not valid")
 		form.Categories = append(form.Categories, categories...)
-
 
 		http.Error(w, err.Error(), http.StatusBadRequest)
 
@@ -65,6 +65,8 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 	file, fileHeader, err := r.FormFile("image")
 
 	if err != nil {
+		h.service.Log.Println(err)
+
 		if err != http.ErrMissingFile {
 
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -79,7 +81,7 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 		if !form.IsImg(fileType) {
 			categories, err := h.service.CategoryService.GetAllCategories()
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -96,7 +98,7 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 		if fileHeader.Size > 5*1024*1024 {
 			categories, err := h.service.CategoryService.GetAllCategories()
 			if err != nil {
-				fmt.Println(err)
+				h.service.Log.Println(err)
 
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -114,7 +116,7 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 
 		categories, err := h.service.CategoryService.GetAllCategories()
 		if err != nil {
-			fmt.Println(err)
+			h.service.Log.Println(err)
 
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -136,7 +138,7 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 	for _, name := range tempD {
 		c, err := h.service.CategoryService.GetCategoryByName(name)
 		if err != nil {
-			fmt.Println(err)
+			h.service.Log.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		} else {
@@ -149,6 +151,7 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 	post_id, err := h.service.PostService.CreatePostWithImage(post)
 
 	if err != nil {
+		h.service.Log.Println(err)
 
 		http.Error(w, err.Error(), http.StatusMethodNotAllowed)
 		return

@@ -3,7 +3,6 @@ package handlers
 import (
 	"fmt"
 	"forum/internal/models"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -21,7 +20,7 @@ func (h *Handler) reactionPost(w http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
-		log.Printf("Error parsing form: %v", err)
+		h.service.Log.Printf("Error parsing form: %v\n", err)
 		http.Error(w, "Error parsing form", http.StatusBadRequest)
 		return
 	}
@@ -30,14 +29,14 @@ func (h *Handler) reactionPost(w http.ResponseWriter, r *http.Request) {
 
 	postID, err := strconv.Atoi(r.FormValue("post_id"))
 	if err != nil {
-		log.Printf("Error converting post_id: %v", err)
+		h.service.Log.Printf("Error converting post_id: %v\n", err)
 		http.Error(w, "Invalid post_id", http.StatusBadRequest)
 		return
 	}
 
 	status, err := strconv.Atoi(r.FormValue("status"))
 	if err != nil {
-		log.Printf("Error converting status: %v", err)
+		h.service.Log.Printf("Error converting status: %v\n", err)
 		http.Error(w, "Invalid status", http.StatusBadRequest)
 		return
 	}
@@ -48,7 +47,7 @@ func (h *Handler) reactionPost(w http.ResponseWriter, r *http.Request) {
 	case 0:
 		// Status is false
 	default:
-		log.Println("Invalid status value")
+		h.service.Log.Printf("Invalid status value")
 		http.Error(w, "Invalid status value", http.StatusBadRequest)
 		return
 	}
@@ -61,7 +60,8 @@ func (h *Handler) reactionPost(w http.ResponseWriter, r *http.Request) {
 
 	err = h.service.PostReactionService.CreatePostReaction(reaction)
 	if err != nil {
-		log.Printf("Error creating post reaction: %v", err)
+
+		h.service.Log.Printf("Error creating post reaction: %v\n", err)
 		http.Error(w, "Error creating post reaction", http.StatusInternalServerError)
 		return
 	}

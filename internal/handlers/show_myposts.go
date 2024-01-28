@@ -17,23 +17,30 @@ func (h *Handler) myposts(w http.ResponseWriter, r *http.Request) {
 
 	user := h.getUserFromContext(r)
 	if user == nil {
+
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
 	posts, err := h.service.PostService.GetPostsByAuthorID(user.ID)
 
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 	err = h.service.PostReactionService.GetAllPostReactionsByPostID(posts)
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 	categories, err := h.service.CategoryService.GetAllCategories()
 
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}

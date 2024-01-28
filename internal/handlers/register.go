@@ -17,6 +17,8 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 
 		err := r.ParseForm()
 		if err != nil {
+			h.service.Log.Println(err)
+
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -47,6 +49,7 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 		err = h.service.UserService.CreateUser(req)
 
 		if err != nil {
+			h.service.Log.Println(err)
 			switch err {
 			case models.ErrDuplicateEmail:
 				form.Errors.Add("email", "Email already in use")

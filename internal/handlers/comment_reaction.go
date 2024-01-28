@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -22,6 +21,7 @@ func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
+		h.service.Log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -32,7 +32,11 @@ func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
 	postID := form.IsInt("post_id")
 	id := form.IsInt("comment_id")
 	status, err := strconv.Atoi(r.FormValue("status"))
-
+	if err != nil {
+		h.service.Log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	if !form.Valid() {
 		http.Redirect(w, r, fmt.Sprintf("/post/%d", postID), http.StatusSeeOther)
 		return
@@ -41,7 +45,8 @@ func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
 	author := h.getUserFromContext(r)
 
 	if err != nil {
-		log.Printf("Error converting status: %v", err)
+		h.service.Log.Println("Error converting status: %v", err)
+
 		http.Error(w, "Invalid status", http.StatusBadRequest)
 		return
 	}
@@ -52,7 +57,7 @@ func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
 	case 0:
 		// Status is false
 	default:
-		log.Println("Invalid status value")
+		h.service.Log.Println("Invalid status value")
 		http.Error(w, "Invalid status value", http.StatusBadRequest)
 		return
 	}
@@ -63,6 +68,7 @@ func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.service.CommentReactionService.CreateCommentsReactions(vote); err != nil {
+		h.service.Log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

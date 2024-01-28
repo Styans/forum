@@ -17,6 +17,8 @@ func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 
 	cookie, err := cookies.GetCookie(r)
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		// http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -24,6 +26,7 @@ func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 
 	err = h.service.SessionService.DeleteSessionByUUID(cookie.Value)
 	if err != nil {
+		h.service.Log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

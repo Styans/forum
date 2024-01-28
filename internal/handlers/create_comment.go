@@ -21,6 +21,8 @@ func (h *Handler) createComment(w http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -46,6 +48,8 @@ func (h *Handler) createComment(w http.ResponseWriter, r *http.Request) {
 
 	err = h.service.CommentService.CreateComment(comment)
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

@@ -10,6 +10,7 @@ import (
 	"forum/internal/service/postReaction"
 	"forum/internal/service/session"
 	"forum/internal/service/user"
+	"log"
 )
 
 type Service struct {
@@ -20,9 +21,10 @@ type Service struct {
 	SessionService         models.SessionServise
 	CategoryService        models.CategoryService
 	PostReactionService    models.PostReactionService
+	Log                    *log.Logger
 }
 
-func NewService(repo *repository.Repository) *Service {
+func NewService(repo *repository.Repository, log *log.Logger) *Service {
 	return &Service{
 		UserService:            user.NewUserService(repo.UserRepo),
 		PostService:            post.NewPostService(repo.PostRepo),
@@ -31,5 +33,6 @@ func NewService(repo *repository.Repository) *Service {
 		SessionService:         session.NewSessionService(repo.SessionRepo),
 		CategoryService:        category.NewCategoryService(repo.CategoryRepo),
 		PostReactionService:    postReaction.NewPostReactionService(repo.PostReactionRepo),
+		Log:                    log,
 	}
 }

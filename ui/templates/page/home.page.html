@@ -36,7 +36,9 @@
                       </div>
                       <div class="post-ctg">
                         {{range .Categories}}
-                        <pre class="post-category-anme">{{.Name}} </pre>
+                        <div id="categories-container">
+                          <pre class="post-category-anme">{{.Name}} </pre>
+                        </div>
                         {{end}}
                       </div>
                     </div>

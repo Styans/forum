@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"forum/internal/render"
 	"net/http"
 	"strconv"
@@ -15,24 +14,31 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method != http.MethodGet {
+		h.service.Log.Println("Method not allowed")
+
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 	pathID := r.URL.Path[len("/post/"):]
 	id, err := strconv.Atoi(pathID)
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, "Page not found", http.StatusNotFound)
 		return
 	}
 
 	post, err := h.service.PostService.GetPostByID(id)
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	comments, err := h.service.CommentService.GetAllByPostID(post.ID)
 	if err != nil {
+		h.service.Log.Println(err)
 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -41,6 +47,7 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 	for _, comment := range comments {
 		comment.Likes, comment.Dislikes, err = h.service.CommentReactionService.GetLikesAndDislikes(comment.ID)
 		if err != nil {
+			h.service.Log.Println(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -48,13 +55,16 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 
 	err = h.service.PostReactionService.PutReactionsToPost(post)
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	categories, err := h.service.CategoryService.GetAllCategories()
 
 	if err != nil {
-		fmt.Println(err)
+		h.service.Log.Println(err)
+
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}

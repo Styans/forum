@@ -197,3 +197,23 @@ function validateForm() {
 
   return true; // Form is valid, allow submission
 }
+
+
+// script.js
+document.addEventListener("DOMContentLoaded", function() {
+  var categoriesContainer = document.querySelector('.post-ctg');
+  var preElements = categoriesContainer.querySelectorAll('.post-category-anme');
+
+  // Ограничиваем количество элементов до 3
+  var maxPreElements = 3;
+  if (preElements.length > maxPreElements) {
+      // Удаляем лишние элементы
+      for (var i = maxPreElements; i < preElements.length; i++) {
+          preElements[i].remove();
+      }
+
+      // Добавляем многоточие к последнему элементу
+      var lastPreElement = preElements[maxPreElements - 1];
+      lastPreElement.textContent += '...';
+  }
+});

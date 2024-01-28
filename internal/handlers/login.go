@@ -25,6 +25,8 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 
 		err := r.ParseForm()
 		if err != nil {
+			h.service.Log.Println(err)
+
 			http.Error(w, "Invalid POST request", http.StatusInternalServerError)
 			return
 		}
@@ -51,6 +53,7 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 
 		user_id, err := h.service.UserService.LoginUser(req)
 		if err != nil {
+			h.service.Log.Println(err)
 			if err == models.ErrInvalidCredentials {
 				form.Errors.Add("generic", "Email or password is incorrect")
 				h.templates.Render(w, r, "log.page.html", &render.PageData{
@@ -64,6 +67,8 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 
 		session, err := h.service.SessionService.CreateSession(user_id)
 		if err != nil {
+			h.service.Log.Println(err)
+
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

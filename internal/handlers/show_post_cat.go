@@ -20,18 +20,23 @@ func (h *Handler) showPostsByCategory(w http.ResponseWriter, r *http.Request) {
 
 	posts, err := h.service.PostService.GetPostsByCategory(category)
 	if err != nil {
+		h.service.Log.Println(err)
 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	err = h.service.PostReactionService.GetAllPostReactionsByPostID(posts)
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 	categories, err := h.service.CategoryService.GetAllCategories()
 
 	if err != nil {
+		h.service.Log.Println(err)
+
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
