@@ -79,7 +79,7 @@ func (s *PostService) UpdatePost(post *models.Post) error {
 }
 
 func (s *PostService) GetPostsByAuthorID(author int) ([]*models.Post, error) {
-	return nil, nil
+	return s.repo.GetPostsByAuthor(author)
 }
 
 func (s *PostService) GetAllPosts(offset, limit int) ([]*models.Post, error) {
@@ -100,4 +100,12 @@ func (p *PostService) GetPostByID(id int) (*models.Post, error) {
 	post.ImagePath = ".." + strings.TrimPrefix(post.ImagePath, "ui")
 
 	return post, nil
+}
+
+func (p *PostService) GetLikedPosts(id int) ([]*models.Post, error) {
+	return p.repo.GetLikedPosts(id)
+}
+
+func (p *PostService) GetPostsByCategory(category string) ([]*models.Post, error) {
+	return p.repo.GetPostsByCategory(category)
 }

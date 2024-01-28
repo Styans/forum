@@ -8,7 +8,7 @@
       </div>
       <div class="post-ctg">
         {{range .Categories}}
-        <span class="post-category-anme"> {{.Name}} </span>
+        <pre class="post-category-anme">{{.Name}} </pre>
         {{end}}
       </div>
     </div>
@@ -18,35 +18,25 @@
       <div class="post-content">{{.Content}}</div>
     </div>
     <div class="post-reactions-datas">
-      <form action="#" method="POST">
-        <input type="hidden" name="post_id" value="{{.ID}}" />
-        <input type="hidden" name="status" value="1" />
-        <button type="submit">
-          <img
-            src="/static/assets/8300917.png"
-            class="reaction"
-            style="transform: scaleY(-1)"
-            alt="like button"
-          />
-          {{.Likes}}
-        </button>
-      </form>
-      <form action="#" method="POST">
-        <input type="hidden" name="post_id" value="{{.ID}}" />
-        <input type="hidden" name="status" value="0" />
-        <button type="submit">
-          <img
-            src="/static/assets/8300917.png"
-            class="reaction"
-            alt="dislike button"
-          />
-          {{.Dislikes}}
-        </button>
-      </form>
+      <div class="reactions">
+        <img
+          src="/static/assets/8300917.png"
+          class="reaction"
+          style="transform: scaleY(-1)"
+          alt="like button"
+        />
+        {{.Likes}}
+      </div>
+      <div class="reactions">
+        <img
+          src="/static/assets/8300917.png"
+          class="reaction"
+          alt="dislike button"
+        />
+        {{.Dislikes}}
+      </div>
+
       <!-- reactions -->
-    </div>
-    <div class="post-comments-datas">
-      <!-- coments -->
     </div>
   </div>
 </a>

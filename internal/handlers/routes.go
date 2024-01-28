@@ -18,8 +18,11 @@ func (h *Handler) Routes() http.Handler {
 
 	mux.HandleFunc("/post/", h.showPost)
 	mux.HandleFunc("/posts", h.GetPosts)
+	mux.HandleFunc("/myposts", h.myposts)
+	mux.HandleFunc("/postscat", h.showPostsByCategory)
 	mux.Handle("/post/create", h.requireAuthentication(http.HandlerFunc(h.createPost)))
 	mux.Handle("/post/reaction", h.requireAuthentication(http.HandlerFunc(h.reactionPost)))
+	mux.Handle("/likedposts", h.requireAuthentication(http.HandlerFunc(h.likedPosts)))
 
 	mux.Handle("/comment/create", h.requireAuthentication(http.HandlerFunc(h.createComment)))
 	mux.Handle("/comment/reaction", h.requireAuthentication(http.HandlerFunc(h.reactionComment)))

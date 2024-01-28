@@ -78,3 +78,28 @@ func (repo *CommentsReactionsStorage) GetReactionsByCommentID(commentID int) ([]
 
 	return reactions, nil
 }
+
+func (s *CommentsReactionsStorage) GetVotesByCommentID(commentID int) ([]*models.CommentReactionDTO, error) {
+	var votes []*models.CommentReactionDTO
+	rows, err := s.db.Query("SELECT * FROM commentsReactions WHERE comment_id = $1", commentID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var v models.CommentReactionDTO
+		err := rows.Scan(
+			&v.ID,
+			&v.UserID,
+			&v.CommentID,
+			&v.Status,
+		)
+		if err != nil {
+			return nil, err
+		}
+		votes = append(votes, &v)
+	}
+
+	return votes, nil
+}

@@ -19,8 +19,10 @@ type CommentReactionRepo interface {
 	GetReactionByUserIDAndCommentID(userID, commentID int) (*CommentReaction, error)
 	GetReactionsByCommentID(commentID int) ([]*CommentReaction, error)
 	DeleteCommentsReactions(commentID int) error
+	GetVotesByCommentID(commentID int) ([]*CommentReactionDTO, error)
 }
 
 type CommentReactionService interface {
 	CreateCommentsReactions(reaction *CommentReactionDTO) error
+	GetLikesAndDislikes(commentID int) (int, int, error)
 }

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"forum/internal/render"
 	"forum/pkg/forms"
 	"log"
@@ -35,11 +34,14 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
-	h.service.PostReactionService.GetAllPostReactionsByPostID(posts)
+	err = h.service.PostReactionService.GetAllPostReactionsByPostID(posts)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
 	categories, err := h.service.CategoryService.GetAllCategories()
 
 	if err != nil {
-		fmt.Println(err)
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
@@ -64,6 +66,11 @@ func (h *Handler) GetPosts(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Incorrect Method", http.StatusMethodNotAllowed)
 		return
+	}
+	topic:= r.URL.Query().Get("topic")
+	switch topic {
+		case "news":
+		default:
 	}
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
 	if err != nil {

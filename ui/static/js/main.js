@@ -19,7 +19,7 @@ window.onscroll = function() {
     prevScrollPos++
     // Scrolling down, hide the navbar
     document.querySelector('.nav_bar').style.top = '-123px'; // Adjust this value based on the height of your navbar
-  }
+  }       
 
 };
 
@@ -141,7 +141,7 @@ function addItem() {
   document.getElementById('listContainer').style.display = 'none';
 }
 
-function fetchNextPostsPage({offset, limit}) {
+function fetchNextPostsPage({ offset, limit }) {
   const params = new URLSearchParams();
   params.set("offset", offset);
   params.set("limit", limit);
@@ -153,28 +153,34 @@ function createObserver() {
   const limit = 10;
   let offset = 1;
 
-  const posts = document.querySelector('.posts');
+  // Проверяем текущий путь страницы
+  if (window.location.pathname === "/") {
+    const posts = document.querySelector('.posts');
 
-  const callback = ([entry], observer) => {
+    const callback = ([entry], observer) => {
       if (entry.isIntersecting) {
-          offset += limit;
-          fetchNextPostsPage({offset: offset, limit: limit}).then((nextPage) => {
-              posts.innerHTML += nextPage;
-          });
-          return;
+        offset += limit;
+        fetchNextPostsPage({ offset: offset, limit: limit }).then((nextPage) => {
+          posts.innerHTML += nextPage;
+        });
+        return;
       }
-  };
+    };
 
-  const options = {
+    const options = {
       root: null,
       threshold: 0,
-  };
+    };
 
-  const observer = new IntersectionObserver(callback, options);
-  const footer = document.querySelector('.footer');
+    const observer = new IntersectionObserver(callback, options);
+    const footer = document.querySelector('.footer');
 
-  observer.observe(footer);
+    observer.observe(footer);
+  }
 }
+
+// Вызываем createObserver только если находимся на главной странице
+createObserver();
 
 function validateForm() {
   var categoryInput = document.getElementById('inputField');

@@ -38,13 +38,13 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// for _, comment := range comments {
-	// 	// comment.Likes, comment.Dislikes, err = h.service
-	// 	if err != nil {
-	// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	// 		return
-	// 	}
-	// }
+	for _, comment := range comments {
+		comment.Likes, comment.Dislikes, err = h.service.CommentReactionService.GetLikesAndDislikes(comment.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 
 	err = h.service.PostReactionService.PutReactionsToPost(post)
 	if err != nil {
@@ -60,6 +60,7 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.templates.Render(w, r, "post.page.html", &render.PageData{
+		Topic:             post.AuthorName,
 		Post:              post,
 		Comments:          comments,
 		Categories:        categories,
