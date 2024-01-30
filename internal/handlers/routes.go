@@ -8,7 +8,7 @@ import (
 func (h *Handler) Routes() http.Handler {
 	mux := http.NewServeMux()
 	// add a css file to route
-	fileServer := http.FileServer((http.Dir("./ui/static")))
+	fileServer := http.FileServer(neuteredFileSystem{http.Dir("./ui/static")})
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	mux.HandleFunc("/", h.home)
@@ -18,8 +18,8 @@ func (h *Handler) Routes() http.Handler {
 
 	mux.HandleFunc("/post/", h.showPost)
 	mux.HandleFunc("/posts", h.GetPosts)
-	mux.HandleFunc("/myposts", h.myposts)
 	mux.HandleFunc("/postscat", h.showPostsByCategory)
+	mux.Handle("/myposts", h.requireAuthentication(http.HandlerFunc(h.myposts)))
 	mux.Handle("/post/create", h.requireAuthentication(http.HandlerFunc(h.createPost)))
 	mux.Handle("/post/reaction", h.requireAuthentication(http.HandlerFunc(h.reactionPost)))
 	mux.Handle("/likedposts", h.requireAuthentication(http.HandlerFunc(h.likedPosts)))

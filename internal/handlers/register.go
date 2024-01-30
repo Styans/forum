@@ -31,10 +31,10 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 		form.MaxLength("password", 50)
 		form.MinLength("password", 8)
 		if r.FormValue("rpass") != r.FormValue("password") {
-			form.Errors.Add("password", "Invalid credentials")
+			form.Errors.Add("password", "Pas credentials")
 		}
 		if !form.Valid() {
-			form.Errors.Add("generic", "Invalid credentials")
+			form.Errors.Add("generic", "Passwords don't match")
 			w.WriteHeader(http.StatusBadRequest)
 			h.templates.Render(w, r, "reg.page.html", &render.PageData{
 				Form: form,
