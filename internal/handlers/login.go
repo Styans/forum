@@ -55,6 +55,7 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			h.service.Log.Println(err)
 			if err == models.ErrInvalidCredentials {
+
 				form.Errors.Add("generic", "Email or password is incorrect")
 				h.templates.Render(w, r, "log.page.html", &render.PageData{
 					Form: form,

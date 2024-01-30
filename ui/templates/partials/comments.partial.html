@@ -3,9 +3,11 @@
   {{if .AuthenticatedUser}}
   <div class="comment_form">
     <form action="/comment/create" method="post">
-      <textarea name="content" id="" cols="30" rows="10"> </textarea>
+      <textarea name="content" id="" maxlength="280" cols="30" rows="10">
+      </textarea>
       <button type="submit" name="post_id" value="{{.Post.ID}}">submit</button>
     </form>
+    {{with .Form}} {{with .Errors.Get "content"}} {{.}} {{end}} {{end}}
   </div>
   {{end}}
   <br />

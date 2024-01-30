@@ -3,16 +3,14 @@ package repository
 import (
 	"database/sql"
 	"forum/internal/models"
-
 	"forum/internal/repository/category"
 	"forum/internal/repository/comment"
 	"forum/internal/repository/commentsReaction"
 	"forum/internal/repository/post"
-	"forum/internal/repository/post/postReaction"
-
-	// "forum/internal/repository/postReaction"
+	"forum/internal/repository/postReaction"
 	"forum/internal/repository/session"
 	"forum/internal/repository/user"
+	// "forum/internal/repository/postReaction"
 )
 
 type Repository struct {

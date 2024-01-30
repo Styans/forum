@@ -154,6 +154,9 @@
         {{with .Errors.Get "generic"}}
         <div class="error">{{.}}</div>
         {{end}}
+        {{with .Errors.Get "username"}}
+        <div class="error">{{.}}</div>
+        {{end}}
         <label>Username</label>
         <input type="text" id="username" value="{{.Get "username"}}" name="username" />
    
@@ -162,10 +165,10 @@
             <label class="error">{{.}}</label>
         {{end}}
         <label for="username">Email</label>
-        <input type="email" id="email" value="{{.Get "email"}}" name="email" />
+        <input type="email" id="email" maxlength="50" value="{{.Get "email"}}" name="email" />
         
         <label for="password">Password</label>
-        <input type="password" placeholder="Create your password" id="password" name="password">
+        <input type="password"maxlength="55" placeholder="Create your password" id="password" name="password">
         {{with .Errors.Get "password"}}
         <label class="error">{{.}}</label>
         {{end}}

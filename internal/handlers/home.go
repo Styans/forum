@@ -91,7 +91,7 @@ func (h *Handler) GetPosts(w http.ResponseWriter, r *http.Request) {
 	posts, err := h.service.PostService.GetAllPosts(offset, limit)
 	if err != nil {
 		h.service.Log.Println(err)
-		// http.Error(w, "Not found", http.StatusNotFound)
+		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
 	h.templates.Render(w, r, "posts.page.html", &render.PageData{Posts: posts})

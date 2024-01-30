@@ -31,8 +31,8 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 	post, err := h.service.PostService.GetPostByID(id)
 	if err != nil {
 		h.service.Log.Println(err)
-
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+//not found
+		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 

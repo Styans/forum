@@ -33,6 +33,7 @@ func (h *Handler) createComment(w http.ResponseWriter, r *http.Request) {
 	postID := form.IsInt("post_id")
 
 	if !form.Valid() {
+		w.WriteHeader(http.StatusBadRequest)
 		http.Redirect(w, r, fmt.Sprintf("/post/%d", postID), http.StatusSeeOther)
 		return
 	}

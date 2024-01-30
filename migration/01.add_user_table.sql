@@ -6,3 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL
 );
+
+
+CREATE UNIQUE INDEX email_uindex ON users (email);
+CREATE UNIQUE INDEX user_uindex ON users (username);

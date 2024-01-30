@@ -10,6 +10,8 @@ copy . .
 
 run go build -o main ./cmd/
 
-expose 8080
+RUN apt-get update && apt-get install -y sqlite3
+
+expose 8000
 
 CMD ["./main"]

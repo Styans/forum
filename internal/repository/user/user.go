@@ -24,9 +24,9 @@ func (s *UserStorage) CreateUser(user *models.User) error {
 	)
 	if err != nil {
 		switch err.Error() {
-		case "UNIQUE constraint failed: user.email":
+		case "UNIQUE constraint failed: users.email":
 			return models.ErrDuplicateEmail
-		case "UNIQUE constraint failed: user.username":
+		case "UNIQUE constraint failed: users.username":
 			return models.ErrDuplicateUsername
 		default:
 			return err

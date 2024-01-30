@@ -1,3 +1,7 @@
-migrate: silent
-	sqlite3 forum.sqlite3 < migrations/add_user_table.sql
-	sqlite3 forum.sqlite3 < migrations/add_post_table.sql
+build :
+	docker build -t go-app .
+
+run :
+	docker run -p 8000:8000 go-app
+
+	

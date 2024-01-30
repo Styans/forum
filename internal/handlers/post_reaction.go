@@ -21,7 +21,7 @@ func (h *Handler) reactionPost(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		h.service.Log.Printf("Error parsing form: %v\n", err)
-		http.Error(w, "Error parsing form", http.StatusBadRequest)
+		http.Error(w, "Error parsing form", http.StatusInternalServerError)
 		return
 	}
 

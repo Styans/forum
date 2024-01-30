@@ -10,7 +10,7 @@ func (h *Handler) myposts(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
 		return
 	}
-	if r.Method != "GET" {
+	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}

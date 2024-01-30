@@ -247,7 +247,6 @@ func (s *PostStorage) GetPostByID(id int) (*models.Post, error) {
 	}
 
 	if err := rows.Err(); err != nil {
-
 		return nil, err
 	}
 

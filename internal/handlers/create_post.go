@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"forum/internal/models"
+	"forum/internal/render"
 	"forum/pkg/forms"
 	"log"
 	"net/http"
@@ -44,10 +45,15 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		form.Errors.Add("generic", "Form is not valid")
-		form.Categories = append(form.Categories, categories...)
+		// form.Errors.Add("generic", "Form is not valid")
+		// form.Categories = append(form.Categories, categories...)
 
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		w.WriteHeader(http.StatusBadRequest)
+		h.templates.Render(w, r, "error.page.html", &render.PageData{
+			Form:              form,
+			Categories:        categories,
+			AuthenticatedUser: h.getUserFromContext(r),
+		})
 
 		return
 	}
@@ -90,8 +96,12 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 			form.Errors.Add("image", "File is not an image")
 			form.Categories = append(form.Categories, categories...)
 
-			http.Redirect(w, r, "/", http.StatusBadRequest)
-
+			w.WriteHeader(http.StatusBadRequest)
+			h.templates.Render(w, r, "error.page.html", &render.PageData{
+				Form:              form,
+				Categories:        categories,
+				AuthenticatedUser: h.getUserFromContext(r),
+			})
 			return
 		}
 
@@ -106,7 +116,13 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 
 			form.Categories = append(form.Categories, categories...)
 			form.Errors.Add("image", "File is too big")
-			http.Redirect(w, r, "/", http.StatusBadRequest)
+
+			w.WriteHeader(http.StatusBadRequest)
+			h.templates.Render(w, r, "error.page.html", &render.PageData{
+				Form:              form,
+				Categories:        categories,
+				AuthenticatedUser: h.getUserFromContext(r),
+			})
 			return
 		}
 	}
@@ -125,8 +141,12 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 		form.Errors.Add("generic", "You must select at least one category")
 		form.Categories = append(form.Categories, categories...)
 
-		http.Redirect(w, r, "/", http.StatusBadRequest)
-
+		w.WriteHeader(http.StatusBadRequest)
+		h.templates.Render(w, r, "error.page.html", &render.PageData{
+			Form:              form,
+			Categories:        categories,
+			AuthenticatedUser: h.getUserFromContext(r),
+		})
 		return
 	}
 
@@ -149,11 +169,10 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 	post.Categories = append(post.Categories, categories...)
 
 	post_id, err := h.service.PostService.CreatePostWithImage(post)
-
 	if err != nil {
 		h.service.Log.Println(err)
 
-		http.Error(w, err.Error(), http.StatusMethodNotAllowed)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	http.Redirect(w, r, fmt.Sprintf("/post/%d", post_id), http.StatusFound)
