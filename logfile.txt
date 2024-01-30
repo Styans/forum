@@ -386,3 +386,23 @@ ERROR: 2024/01/30 18:03:25 create_post.go:74: http: no such file
 ERROR: 2024/01/30 18:03:28 home.go:18: strconv.Atoi: parsing "": invalid syntax
 ERROR: 2024/01/30 18:03:28 home.go:23: strconv.Atoi: parsing "": invalid syntax
 ERROR: 2024/01/30 18:03:49 create_post.go:74: http: no such file
+ERROR: 2024/01/30 18:23:30 home.go:18: strconv.Atoi: parsing "": invalid syntax
+ERROR: 2024/01/30 18:23:30 home.go:23: strconv.Atoi: parsing "": invalid syntax
+ERROR: 2024/01/30 18:23:33 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:23:33 home.go:18: strconv.Atoi: parsing "": invalid syntax
+ERROR: 2024/01/30 18:23:33 home.go:23: strconv.Atoi: parsing "": invalid syntax
+ERROR: 2024/01/30 18:23:35 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:23:54 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:23:54 register.go:54: duplicate email
+ERROR: 2024/01/30 18:24:05 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:24:05 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:24:37 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:24:37 register.go:54: duplicate username
+ERROR: 2024/01/30 18:24:46 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:26:13 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:26:13 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:26:18 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:26:18 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:26:23 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:26:23 middleware.go:15: http: named cookie not present
+ERROR: 2024/01/30 18:26:37 middleware.go:15: http: named cookie not present

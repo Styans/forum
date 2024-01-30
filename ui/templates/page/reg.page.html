@@ -51,7 +51,7 @@
       }
 
       form {
-        width: auto;
+        width: 448px;
         height: auto;
         background-color: rgba(255, 255, 255, 0.13);
         position: absolute;
@@ -168,7 +168,8 @@
         <input type="email" id="email" maxlength="50" value="{{.Get "email"}}" name="email" />
         
         <label for="password">Password</label>
-        <input type="password"maxlength="55" placeholder="Create your password" id="password" name="password">
+        <input type="password"maxlength="55" placeholder="New Password" id="password" name="password">
+        <input type="password"maxlength="55" placeholder="Retype New Password" id="password" name="rpass">
         {{with .Errors.Get "password"}}
         <label class="error">{{.}}</label>
         {{end}}

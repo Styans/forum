@@ -24,13 +24,15 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 		}
 
 		form := forms.New(r.PostForm)
-		form.Required("username", "email", "password")
+		form.Required("username", "email", "password", "rpass")
 		form.MaxLength("username", 50)
 		form.MaxLength("email", 50)
 		form.MatchesPattern("email", forms.EmailRX)
 		form.MaxLength("password", 50)
 		form.MinLength("password", 8)
-
+		if r.FormValue("rpass") != r.FormValue("password") {
+			form.Errors.Add("password", "Invalid credentials")
+		}
 		if !form.Valid() {
 			form.Errors.Add("generic", "Invalid credentials")
 			w.WriteHeader(http.StatusBadRequest)
