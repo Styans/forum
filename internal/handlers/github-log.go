@@ -6,15 +6,13 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 	"strings"
 	"time"
 
+	"forum/internal/helpers/auth"
 	"forum/internal/helpers/cookies"
 	"forum/internal/models"
 )
-
-
 
 const (
 	githubAuthURL     = "https://github.com/login/oauth/authorize"
@@ -23,10 +21,9 @@ const (
 )
 
 type githubUserInfo struct {
-	Name   string `json:"name"`
+	Name   string `json:"login"`
 	NodeID string `json:"node_id"`
 }
-
 
 func (h *Handler) handleGithubLogin(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=user:email", githubAuthURL, h.githubConfig.ClientID, h.githubConfig.RedirectURL)
@@ -54,7 +51,7 @@ func (h *Handler) handleGithubCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Extract access token from response
-	accessToken, err := ExtractAccessTokenFromResponse(string(body))
+	accessToken, err := auth.ExtractAccessTokenFromResponse(string(body))
 	if err != nil {
 		log.Printf("Failed to extract access token from response")
 		http.Error(w, "Failed to extract access token from response", http.StatusInternalServerError)
@@ -115,14 +112,4 @@ func (h *Handler) handleGithubCallback(w http.ResponseWriter, r *http.Request) {
 	cookies.SetCookie(w, session.UUID, int(time.Until(session.ExpireAt).Seconds()))
 
 	http.Redirect(w, r, "/", http.StatusFound)
-}
-
-func ExtractAccessTokenFromResponse(response string) (string, error) {
-	params, err := url.ParseQuery(response)
-	if err != nil {
-		return "", err
-	}
-
-	accessToken := params.Get("access_token")
-	return accessToken, nil
 }

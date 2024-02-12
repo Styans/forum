@@ -271,15 +271,17 @@ func (s *PostStorage) GetPostByID(id int) (*models.Post, error) {
 	return post, nil
 }
 
-func (s *PostStorage) GetLikedPosts(id int) ([]*models.Post, error) {
+func (s *PostStorage) GetLikedPosts(id int, offset int, limit int) ([]*models.Post, error) {
 	query := `SELECT p.id, p.title, p.content, p.author_id, p.authorname, p.created_at, p.updated_at FROM posts p
 	JOIN postsReactions a ON p.id = a.post_id
-	WHERE a.user_id = $1 AND a.reaction = 1`
+	WHERE a.user_id = $1 AND a.reaction = 1
+	ORDER BY p.id DESC
+	LIMIT $3 OFFSET $4`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	rows, err := s.db.QueryContext(ctx, query, id)
+	rows, err := s.db.QueryContext(ctx, query, id, limit, offset)
 	if err != nil {
 		fmt.Println(err)
 
@@ -337,15 +339,17 @@ func (s *PostStorage) GetLikedPosts(id int) ([]*models.Post, error) {
 	return posts, nil
 }
 
-func (s *PostStorage) GetPostsByCategory(category string) ([]*models.Post, error) {
+func (s *PostStorage) GetPostsByCategory(category string, offset int, limit int) ([]*models.Post, error) {
 	query := `SELECT p.* FROM posts p
 	JOIN PostCategories pc ON p.id = pc.post_id
-	WHERE pc.category_name = $1`
+	WHERE pc.category_name = $1
+	ORDER BY p.id DESC
+	LIMIT $3 OFFSET $4`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	rows, err := s.db.QueryContext(ctx, query, category)
+	rows, err := s.db.QueryContext(ctx, query, category, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -397,13 +401,15 @@ func (s *PostStorage) GetPostsByCategory(category string) ([]*models.Post, error
 	return posts, nil
 }
 
-func (s *PostStorage) GetPostsByAuthor(author int) ([]*models.Post, error) {
-	query := `SELECT * FROM posts WHERE author_id = $1`
+func (s *PostStorage) GetPostsByAuthor(author int, offset int, limit int) ([]*models.Post, error) {
+	query := `SELECT * FROM posts WHERE author_id = $1
+	ORDER BY id DESC
+	LIMIT $3 OFFSET $4`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	rows, err := s.db.QueryContext(ctx, query, author)
+	rows, err := s.db.QueryContext(ctx, query, author, limit, offset)
 	if err != nil {
 		return nil, err
 	}

@@ -2,11 +2,10 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
-	"strconv"
-
 	"forum/internal/models"
 	"forum/pkg/forms"
+	"net/http"
+	"strconv"
 )
 
 func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +37,7 @@ func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if !form.Valid() {
-		http.Redirect(w, r, fmt.Sprintf("/post/%d", postID), http.StatusSeeOther)
+		http.Redirect(w, r, fmt.Sprintf("/post/?id=%d", postID), http.StatusSeeOther)
 		return
 	}
 
@@ -53,14 +52,27 @@ func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
 
 	switch status {
 	case 1:
-		// Status is true
+		// Status is Like
 	case 0:
-		// Status is false
+		// Status is DisLike
 	default:
 		h.service.Log.Println("Invalid status value")
 		http.Error(w, "Invalid status value", http.StatusBadRequest)
 		return
 	}
+	_, err = h.service.PostService.GetPostByID(postID)
+	if err != nil {
+		h.service.Log.Println(err)
+		http.Error(w, "Invalid status value", http.StatusBadRequest)
+		return
+	}
+	_, err = h.service.CommentService.GetCommentByID(id)
+	if err != nil {
+		h.service.Log.Println(err)
+		http.Error(w, "Invalid status value", http.StatusBadRequest)
+		return
+	}
+
 	vote := &models.CommentReactionDTO{
 		CommentID: id,
 		Status:    status == 1,
@@ -73,5 +85,5 @@ func (h *Handler) reactionComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/post/%d", postID), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/post/?id=%d", postID), http.StatusSeeOther)
 }

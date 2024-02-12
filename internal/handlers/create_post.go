@@ -175,5 +175,5 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(w, r, fmt.Sprintf("/post/%d", post_id), http.StatusFound)
+	http.Redirect(w, r, fmt.Sprintf("/post/?id=%d", post_id), http.StatusFound)
 }

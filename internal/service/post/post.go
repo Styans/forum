@@ -78,8 +78,8 @@ func (s *PostService) UpdatePost(post *models.Post) error {
 	return nil
 }
 
-func (s *PostService) GetPostsByAuthorID(author int) ([]*models.Post, error) {
-	return s.repo.GetPostsByAuthor(author)
+func (s *PostService) GetPostsByAuthorID(author int, offset int, limit int) ([]*models.Post, error) {
+	return s.repo.GetPostsByAuthor(author, offset , limit )
 }
 
 func (s *PostService) GetAllPosts(offset, limit int) ([]*models.Post, error) {
@@ -102,10 +102,10 @@ func (p *PostService) GetPostByID(id int) (*models.Post, error) {
 	return post, nil
 }
 
-func (p *PostService) GetLikedPosts(id int) ([]*models.Post, error) {
-	return p.repo.GetLikedPosts(id)
+func (p *PostService) GetLikedPosts(id int, offset int, limit int) ([]*models.Post, error) {
+	return p.repo.GetLikedPosts(id , offset , limit)
 }
 
-func (p *PostService) GetPostsByCategory(category string) ([]*models.Post, error) {
-	return p.repo.GetPostsByCategory(category)
+func (p *PostService) GetPostsByCategory(category string, offset int, limit int) ([]*models.Post, error) {
+	return p.repo.GetPostsByCategory(category, offset , limit )
 }

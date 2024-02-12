@@ -77,6 +77,7 @@
         letter-spacing: 0.5px;
         outline: none;
         border: none;
+        text-decoration: none;
       }
 
       form h3 {
@@ -124,16 +125,21 @@
       .social {
         margin-top: 30px;
         display: flex;
+        justify-content: space-around;
       }
 
       .social div {
         background: red;
-        width: 150px;
+        width: 96px;
+        height: 53px;
         border-radius: 3px;
-        padding: 5px 10px 10px 5px;
+        /* padding: 5px 10px 10px 5px; */
         background-color: rgba(255, 255, 255, 0.27);
         color: #eaf0fb;
         text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .social div:hover {
@@ -147,11 +153,23 @@
       .social i {
         margin-right: 4px;
       }
+
+      .logo_sso_img {
+        width: 36px;
+        height: 36px;
+        border-radius: 5px;
+      }
+      .logo_sso a {
+        display: flex;
+        justify-content: center;
+      }
     </style>
   </head>
   <body>
     <form action="/login" method="post">
-      {{with .Form}} {{with .Errors.Get "generic"}}
+      {{with .Form}} {{with .Errors.Get "email"}}
+      <div class="error">{{.}}</div>
+      {{end}} {{end}} {{with .Form}} {{with .Errors.Get "generic"}}
       <div class="error">{{.}}</div>
       {{end}}
       <h3>Login</h3>
@@ -170,10 +188,29 @@
       />
 
       <button>Log In</button>
-      <!-- <div class="social">
-        <div class="go"><i class="fab fa-google"></i> Google</div>
-        <div class="fb"><i class="fab fa-GitHub"></i> GitHub</div>
-      </div> -->
+      <div class="social">
+        <div class="logo_sso">
+          <a href="/register"> register</a>
+        </div>
+        <div class="logo_sso">
+          <a href="/google/login">
+            <img
+              class="logo_sso_img"
+              src="/static/assets/google.png"
+              alt="Login with Google"
+            />
+          </a>
+        </div>
+        <div class="logo_sso">
+          <a href="/github/login">
+            <img
+              class="logo_sso_img"
+              src="/static/assets/github.png"
+              alt="Login with GitHub"
+            />
+          </a>
+        </div>
+      </div>
       {{end}}
     </form>
   </body>

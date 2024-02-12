@@ -34,6 +34,12 @@ func (h *Handler) reactionPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_, err = h.service.PostService.GetPostByID(postID)
+	if err != nil {
+		h.service.Log.Println(err)
+		http.Error(w, "Invalid status value", http.StatusBadRequest)
+		return
+	}
 	status, err := strconv.Atoi(r.FormValue("status"))
 	if err != nil {
 		h.service.Log.Printf("Error converting status: %v\n", err)
@@ -52,6 +58,13 @@ func (h *Handler) reactionPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_, err = h.service.PostService.GetPostByID(postID)
+	if err != nil {
+		h.service.Log.Println(err)
+		http.Error(w, "Invalid status value", http.StatusBadRequest)
+		return
+	}
+
 	reaction := &models.PostReactionDTO{
 		UserID: userID.ID,
 		PostID: postID,
@@ -66,5 +79,5 @@ func (h *Handler) reactionPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/post/%d", postID), http.StatusFound)
+	http.Redirect(w, r, fmt.Sprintf("/post/?id=%d", postID), http.StatusFound)
 }

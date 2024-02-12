@@ -2,10 +2,9 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
-
 	"forum/internal/models"
 	"forum/pkg/forms"
+	"net/http"
 )
 
 func (h *Handler) createComment(w http.ResponseWriter, r *http.Request) {
@@ -32,9 +31,15 @@ func (h *Handler) createComment(w http.ResponseWriter, r *http.Request) {
 	form.MaxLength("content", 280)
 	postID := form.IsInt("post_id")
 
+	_, err = h.service.PostService.GetPostByID(postID)
+	if err != nil {
+		h.service.Log.Println(err)
+		http.Error(w, "Invalid status value", http.StatusBadRequest)
+		return
+	}
+
 	if !form.Valid() {
-		w.WriteHeader(http.StatusBadRequest)
-		http.Redirect(w, r, fmt.Sprintf("/post/%d", postID), http.StatusSeeOther)
+		http.Redirect(w, r, fmt.Sprintf("/post/?id=%d", postID), http.StatusSeeOther)
 		return
 	}
 
@@ -46,7 +51,6 @@ func (h *Handler) createComment(w http.ResponseWriter, r *http.Request) {
 		AuthorID:   author.ID,
 		AuthorName: author.Username,
 	}
-
 	err = h.service.CommentService.CreateComment(comment)
 	if err != nil {
 		h.service.Log.Println(err)
@@ -55,5 +59,5 @@ func (h *Handler) createComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/post/%d", postID), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/post/?id=%d", postID), http.StatusSeeOther)
 }

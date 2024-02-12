@@ -4,23 +4,20 @@ import (
 	"forum/internal/render"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
-	if !strings.HasPrefix(r.URL.Path, "/post/") {
+	if r.URL.Path != "/post/" {
 		http.Error(w, "Page not found", http.StatusNotFound)
 		return
 	}
-
 	if r.Method != http.MethodGet {
 		h.service.Log.Println("Method not allowed")
-
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	pathID := r.URL.Path[len("/post/"):]
-	id, err := strconv.Atoi(pathID)
+
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil {
 		h.service.Log.Println(err)
 
@@ -31,7 +28,7 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 	post, err := h.service.PostService.GetPostByID(id)
 	if err != nil {
 		h.service.Log.Println(err)
-//not found
+		// not found
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
@@ -61,7 +58,6 @@ func (h *Handler) showPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	categories, err := h.service.CategoryService.GetAllCategories()
-
 	if err != nil {
 		h.service.Log.Println(err)
 

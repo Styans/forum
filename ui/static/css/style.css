@@ -623,7 +623,13 @@ form {
 
 .btn-options {
   font-family: 'Montserrat', sans-serif;
+  padding: 10px 4px ;
+  margin-right: 5px;
+  cursor: pointer;
+}
 
+.btn-options:hover {
+  background-color: rgb(48, 48, 48);
 }
 .option {
   font-family: 'Montserrat', sans-serif;
@@ -655,4 +661,19 @@ form {
 .comment-content {
   word-wrap: break-word;
   padding: 0 10px;
+}
+
+.ctg_title {
+  color: #fff;
+}
+
+.comment-input {
+  color: #000;
+}
+
+.title-comm {
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+font-size: 800;
+margin-bottom: 20px;
 }

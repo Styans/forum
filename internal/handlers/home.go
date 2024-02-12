@@ -59,6 +59,8 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+
+
 func (h *Handler) GetPosts(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/posts" {
 		h.service.Log.Println(r.URL.Path)
@@ -71,11 +73,13 @@ func (h *Handler) GetPosts(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Incorrect Method", http.StatusMethodNotAllowed)
 		return
 	}
-	topic := r.URL.Query().Get("topic")
-	switch topic {
-	case "news":
-	default:
+
+	isUserGay := r.Header.Get("INFINITE-SCROLL")
+	if len(isUserGay) == 0 {
+		http.Error(w, "Not found", http.StatusNotFound)
+		return 
 	}
+
 	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
 	if err != nil {
 		h.service.Log.Println(err)
@@ -89,6 +93,13 @@ func (h *Handler) GetPosts(w http.ResponseWriter, r *http.Request) {
 		offset = 0
 	}
 	posts, err := h.service.PostService.GetAllPosts(offset, limit)
+	err = h.service.PostReactionService.GetAllPostReactionsByPostID(posts)
+	if err != nil {
+		h.service.Log.Println(err)
+
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
 	if err != nil {
 		h.service.Log.Println(err)
 		http.Error(w, "Not found", http.StatusNotFound)

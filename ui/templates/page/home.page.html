@@ -25,7 +25,7 @@
               {{if .AuthenticatedUser}} {{template "create_post" .}} {{end}}
               <div class="posts">
                 {{range .Posts}}
-                <a href="/post/{{.ID}}">
+                <a href="/post?id={{.ID}}">
                   <div class="post-table">
                     <div class="post-header">
                       <div class="post-autor-datas">

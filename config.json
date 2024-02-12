@@ -6,13 +6,13 @@
     "static_dir": "./ui/static",
     "template_dir": "./ui/templates",
     "google_config": {
-        "client_id": "575408325309-c95fcs7c0jd33thu6piqfj9hatcl2uv6.apps.googleusercontent.com",
-        "client_secret": "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",
+        "client_id": "868100390306-j759v7n1efvluv3rj4qcri0f95rvn9g9.apps.googleusercontent.com",
+        "client_secret": "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",
         "redirect_url": "http://localhost:8080/google/callback"
     },
     "github_config": {
-        "client_id": "974f85c461043e37470e",
-        "client_secret": "3ab9f834b15da1b343f5a68b54b0cd8e70767c5f",
+        "client_id": "2f6f7b9a60abd0b41dea",
+        "client_secret": "9e0e0962f3407937e7a332685b7ca7f79b81362b",
         "redirect_url": "http://localhost:8080/github/callback"
     }
 }

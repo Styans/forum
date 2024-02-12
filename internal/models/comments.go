@@ -29,5 +29,5 @@ type CommentRepo interface {
 type CommentService interface {
 	CreateComment(comment *CreateCommentDTO) error
 	GetAllByPostID(postID int) ([]*Comment, error)
-	// GetCommentByID(id int) (*Comment, error)
+	GetCommentByID(id int) (*Comment, error)
 }
